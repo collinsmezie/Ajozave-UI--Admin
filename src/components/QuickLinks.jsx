@@ -82,7 +82,7 @@ import React from 'react';
 const QuickLinks = () => {
   const links = [
     { name: 'Send Money', icon: 'fas fa-paper-plane' },
-    { name: 'Airtime.& Data', icon: 'fas fa-mobile-alt' },
+    { name: 'Airtime& Data', icon: 'fas fa-mobile-alt' },
     { name: 'Bill Payment', icon: 'fas fa-file-invoice-dollar' },
     { name: 'FX Swap', icon: 'fas fa-exchange-alt' }
   ];
@@ -97,7 +97,7 @@ const QuickLinks = () => {
           {links.map((link, index) => (
             <div key={index} className="flex flex-col items-center space-y-2 w-1/4">
               <div className="border border-gray-300 rounded-full w-12 h-12 flex items-center justify-center">
-                <i className={`${link.icon} ${index === 0 ? 'text-sky-500' : index === 1 ? 'text-amber-500' : index === 2 ? 'text-pink-400' : 'text-teal-400'} text-2xl`}></i>
+                <i className={`${link.icon} ${index === 0 ? 'text-sky-500' : index === 1 ? 'text-amber-500' : index === 2 ? 'text-pink-400' : 'text-teal-400'} text-xl`}></i>
               </div>
               <span className="text-gray-600 text-xs text-center">
                 {link.name.split(' ').map((word, idx) => (
