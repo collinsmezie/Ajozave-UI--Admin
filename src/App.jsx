@@ -14,7 +14,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
   return (
-    <div className="bg-gray-100 min-h-screen pb-16">
+    <div className="bg-white min-h-screen pb-16">
       <Header />
       <AccountSection />
       <QuickLinks />
