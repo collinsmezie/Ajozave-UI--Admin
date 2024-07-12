@@ -6,7 +6,7 @@ const AccountSection = () => {
     <div className="mt-4 mx-2 bg-white rounded-lg p-4">
       <div className="flex justify-between items-center mb-4">
         <div className="bg-gray-300 rounded-full p-2">
-          <div className="bg-teal-600 text-white px-3 py-1 rounded-full font-bold">
+          <div className="bg-teal-600 text-white px-3 py-1 rounded-full font-bold text-sm">
             Admin Account
           </div>
         </div>
