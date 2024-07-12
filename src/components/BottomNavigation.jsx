@@ -16,7 +16,7 @@ const BottomNavigation = () => {
         <div key={index} className="flex flex-col items-center space-y-1 w-1/5">
           {/* <i className={`${item.icon} text-gray-600 text-xl`}></i> */}
           
-          <i className={`${item.icon} ${index === 0 ? 'text-red-600': 'text-gray-600'} text-2xl`}></i>
+          <i className={`${item.icon} ${index === 0 ? 'text-red-600': 'text-gray-600'} text-xl`}></i>
 
           <span className="text-gray-600 text-xs">{item.name}</span>
         </div>
