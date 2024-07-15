@@ -1,7 +1,3 @@
-
-
-
-
 // src/App.js
 import React from 'react';
 import Header from './components/Header';
@@ -9,17 +5,30 @@ import AccountSection from './components/AccountSection';
 import QuickLinks from './components/QuickLinks';
 import SpecialOffers from './components/SpecialOffers';
 import BottomNavigation from './components/BottomNavigation';
+import Auth from './components/Auth';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
+
+import { useState } from 'react';
+
 function App() {
+  const [login, setLogin] = useState(false);
+
+
   return (
     <div className="bg-white min-h-screen pb-16">
-      <Header />
-      <AccountSection />
-      <QuickLinks />
-      <SpecialOffers />
-      <BottomNavigation />
+      {login ? (
+        <>
+          <Header />
+          <AccountSection />
+          <QuickLinks />
+          <SpecialOffers />
+          <BottomNavigation />
+        </>
+      ) : (
+        <Auth setLogin={setLogin} />
+      )}
     </div>
   );
 }
