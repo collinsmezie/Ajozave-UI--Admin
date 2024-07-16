@@ -14,7 +14,11 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,vue}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Nunito', 'sans-serif'],
+      }
+    },
   },
   plugins: [],
 }

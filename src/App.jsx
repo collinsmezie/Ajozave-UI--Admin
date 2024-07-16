@@ -12,32 +12,59 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 import { useState } from 'react';
 
+// function App() {
+//   const [login, setLogin] = useState(false);
+
+
+//   return (
+//     <div className="bg-white min-h-screen pb-16">
+//       {login ? (
+//         <>
+//           <Header />
+//           <AccountSection />
+//           <QuickLinks />
+//           <SpecialOffers />
+//           <BottomNavigation />
+//         </>
+//       ) : (
+//         <Auth setLogin={setLogin} />
+//       )}
+//     </div>
+//   );
+// }
+
+// export default App;
+
+
+
+
 function App() {
   const [login, setLogin] = useState(false);
 
 
   return (
-    <div className="bg-white min-h-screen pb-16">
-      {login ? (
-        <>
-          <Header />
-          <AccountSection />
-          <QuickLinks />
-          <SpecialOffers />
-          <BottomNavigation />
-        </>
-      ) : (
-        <Auth setLogin={setLogin} />
-      )}
-    </div>
+    // <div className="bg-white min-h-screen pb-16">
+  
+    //     {/* <>
+    //       <Header />
+    //       <AccountSection />
+    //       <QuickLinks />
+    //       <SpecialOffers />
+    //       <BottomNavigation />
+    //     </> */}
+
+
+    <Auth setLogin={setLogin} />
+
+    // </div>
+
+
+
+    
   );
 }
 
 export default App;
-
-
-
-
 
 
 
