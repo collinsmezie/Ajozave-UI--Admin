@@ -86,7 +86,7 @@ import Auth from './components/Auth';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
 
   return (
     <div className="bg-white min-h-screen flex items-center justify-center">

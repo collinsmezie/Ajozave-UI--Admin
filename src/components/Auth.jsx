@@ -30,13 +30,13 @@ const Auth = () => {
         <div className="flex mb-12 border rounded-full">
           <div
             onClick={() => setIsExistingCustomer(false)}
-            className={`flex-1 py-2 text-center cursor-pointer rounded-full ${!isExistingCustomer ? 'bg-sky-400 text-white text-sm' : 'text-gray-600 text-sm'}`}
+            className={`flex-1 py-2 text-center cursor-pointer rounded-full ${!isExistingCustomer ? 'bg-red-500 text-white text-sm' : 'text-gray-600 text-sm'}`}
           >
             New Customer
           </div>
           <div
             onClick={() => setIsExistingCustomer(true)}
-            className={`flex-1 py-2 text-center cursor-pointer rounded-full ${isExistingCustomer ? 'bg-sky-400 text-white text-sm' : 'text-gray-600 text-sm'}`}
+            className={`flex-1 py-2 text-center cursor-pointer rounded-full ${isExistingCustomer ? 'bg-red-500 text-white text-sm' : 'text-gray-600 text-sm'}`}
           >
             Existing Customer
           </div>
@@ -76,13 +76,13 @@ const Auth = () => {
         <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm p-6 bg-white flex justify-between items-center">
 
           <button className="flex items-center justify-center w-12 h-12 bg-white border border-gray-300 rounded-full">
-            <FontAwesomeIcon icon={faGoogle} className="text-sky-500" />
+            <FontAwesomeIcon icon={faGoogle} className="text-red-400" />
           </button>
           <button className="flex items-center justify-center w-12 h-12 bg-white border border-gray-300 rounded-full">
-            <FontAwesomeIcon icon={faFingerprint} className="text-gray-500 text-3xl" />
+            <FontAwesomeIcon icon={faBank} className="text-red-300 text-xl" />
           </button>
           <button className="flex items-center justify-center w-12 h-12 bg-white border border-gray-300 rounded-full">
-            <FontAwesomeIcon icon={faGithub} className="text-teal-500" />
+            <FontAwesomeIcon icon={faGithub} className="text-red-500" />
           </button>
         </div>
       </div >
