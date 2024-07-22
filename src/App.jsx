@@ -1,8 +1,8 @@
 // <div className="bg-white min-h-screen pb-16 border border-blue-500 flex items-center justify-center fixed inset-0">
 
-
 // src/App.js
-// import React from 'react';
+// import React, { useState } from 'react';
+// import { Route, Switch } from 'react-router-dom';
 // import Header from './components/Header';
 // import AccountSection from './components/AccountSection';
 // import QuickLinks from './components/QuickLinks';
@@ -11,29 +11,24 @@
 // import Auth from './components/Auth';
 // import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
-
-// import { useState } from 'react';
-
 // function App() {
-//   const [login, setLogin] = useState(true);
-
+//   const [login, setLogin] = useState(false);
 
 //   return (
-//     <div className="bg-white min-h-screen pb-16 border border-blue-500">
- 
-
-//       {login ? (
-//         <>
-//           <Header />
-//           <AccountSection />
-//           <QuickLinks />
-//           <SpecialOffers />
-//           <BottomNavigation />
-//         </>
-//       ) : (
-//         <Auth setLogin={setLogin} />
-//       )}
+//     <div className="bg-white min-h-screen flex items-center justify-center">
+//       <div className="w-full max-w-sm min-h-screen bg-white border border-gray-200 rounded-lg shadow-lg">
+//         {login ? (
+//           <>
+//             <Header />
+//             <AccountSection />
+//             <QuickLinks />
+//             <SpecialOffers />
+//             <BottomNavigation />
+//           </>
+//         ) : (
+//           <Auth setLogin={setLogin} />
+//         )}
+//       </div>
 //     </div>
 //   );
 // }
@@ -41,76 +36,28 @@
 // export default App;
 
 
-
-
-// function App() {
-//   const [login, setLogin] = useState(false);
-
-
-//   return (
-//     // <div className="bg-white min-h-screen pb-16">
-  
-//     //     {/* <>
-//     //       <Header />
-//     //       <AccountSection />
-//     //       <QuickLinks />
-//     //       <SpecialOffers />
-//     //       <BottomNavigation />
-//     //     </> */}
-
-
-//     <Auth setLogin={setLogin} />
-
-//     // </div>
-
-
-
-    
-//   );
-// }
-
-// export default App;
-
-
-
-
-
 // src/App.js
-import React, { useState } from 'react';
-import Header from './components/Header';
-import AccountSection from './components/AccountSection';
-import QuickLinks from './components/QuickLinks';
-import SpecialOffers from './components/SpecialOffers';
-import BottomNavigation from './components/BottomNavigation';
-import Auth from './components/Auth';
+import React from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import HomePage from './components/pages/Home';
+import AuthPage from './components/pages/AuthPage';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
-  const [login, setLogin] = useState(false);
-
   return (
-    <div className="bg-white min-h-screen flex items-center justify-center">
-      <div className="w-full max-w-sm min-h-screen bg-white border border-gray-200 rounded-lg shadow-lg">
-        {login ? (
-          <>
-            <Header />
-            <AccountSection />
-            <QuickLinks />
-            <SpecialOffers />
-            <BottomNavigation />
-          </>
-        ) : (
-          <Auth setLogin={setLogin} />
-        )}
+      <div className="bg-white min-h-screen flex items-center justify-center">
+        <div className="w-full max-w-sm min-h-screen bg-white border border-gray-200 rounded-lg shadow-lg">
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/authentication" element={<AuthPage />} />
+            <Route path="/" element={<Navigate replace to="/authentication" />} />
+          </Routes>
+        </div>
       </div>
-    </div>
   );
 }
 
 export default App;
-
-
-
 
 
 
@@ -174,27 +121,4 @@ export default App;
 
 // // export default App
 
-
-
-// src/App.js
-// import React from 'react';
-// import Header from './components/Header';
-// import AccountSection from './components/AccountSection';
-// import QuickLinks from './components/QuickLinks';
-// import SpecialOffers from './components/SpecialOffers';
-// import BottomNavigation from './components/BottomNavigation';
-
-// function App() {
-//   return (
-//     <div className="bg-gray-100 min-h-screen pb-16">
-//       <Header />
-//       <AccountSection />
-//       <QuickLinks />
-//       <SpecialOffers />
-//       <BottomNavigation />
-//     </div>
-//   );
-// }
-
-// export default App;
 
