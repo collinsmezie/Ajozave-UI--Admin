@@ -3,7 +3,7 @@ import React from 'react';
 
 const QuickLinks = () => {
   const links = [
-    { name: 'Send Money', icon: 'fas fa-paper-plane' },
+    { name: 'Send Money', icon: 'fas fa-money-bill-alt' },
     { name: 'Airtime& Data', icon: 'fas fa-mobile-alt' },
     { name: 'Bill Payment', icon: 'fas fa-file-invoice-dollar' },
     { name: 'FX Swap', icon: 'fas fa-exchange-alt' }

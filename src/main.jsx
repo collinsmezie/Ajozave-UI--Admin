@@ -13,7 +13,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         domain="dev-vcujy8hpx2rawtkt.us.auth0.com"
         clientId="ilc1618vkopw4TGLPtBBkqn8eIJL5cwC"
         authorizationParams={{
-          redirect_uri: window.location.origin
+          // redirect_uri: window.location.origin
+          redirect_uri: "http://localhost:5173/home"
         }}
       >
         <App />

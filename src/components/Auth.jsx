@@ -73,9 +73,17 @@ const Auth = () => {
 
       <button className="text-sm text-red-500 mb-4">Forgot Password?</button>
 
+      {!isExistingCustomer ? (
+        <button className="w-full py-3 border border-gray-300 text-black rounded-lg mb-8"
+          onClick={() => loginWithRedirect()}
+        >Register</button>
+      ) : (
+      
       <button className="w-full py-3 border border-gray-300 text-black rounded-lg mb-8"
         onClick={() => loginWithRedirect()}
       >Log In</button>
+
+      )}
 
       {/* <div className="flex justify-between items-center absolute bottom-0 left-0 right-0 p-8"> */}
       <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm p-6 bg-white flex justify-between items-center">

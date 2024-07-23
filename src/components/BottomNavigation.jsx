@@ -95,7 +95,7 @@ const BottomNavigation = () => {
     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-sm bg-white shadow-md flex justify-between items-center p-2">
       {navItems.map((item, index) => (
         <div key={index} className="flex flex-col items-center w-1/5">
-          <i className={`${item.icon} ${index === 0 ? 'text-red-600' : 'text-gray-600'} text-lg`}></i>
+          <i className={`${item.icon} ${index === 0 ? 'text-red-600' : 'text-red-300'} text-lg`}></i>
           <span className="text-gray-600 text-xs">{item.name}</span>
         </div>
       ))}
