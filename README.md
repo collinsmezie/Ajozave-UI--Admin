@@ -1,4 +1,4 @@
-# Ajozave-admin-UI
+# Ajozave-admin Interface
 
 Admin interface for managing sessions and users.
 
