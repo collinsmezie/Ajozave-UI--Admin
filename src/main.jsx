@@ -1,20 +1,27 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { Auth0Provider } from '@auth0/auth0-react';
 import App from './App.jsx'
-// import App from './App.js'
 import './style.css'
 import '../index.css'
-
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter as Router} from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Router>
+      <Auth0Provider
+        domain="dev-vcujy8hpx2rawtkt.us.auth0.com"
+        clientId="ilc1618vkopw4TGLPtBBkqn8eIJL5cwC"
+        authorizationParams={{
+          // redirect_uri: window.location.origin
+          redirect_uri: "http://localhost:5173/home"
+        }}
+      >
+        <App />
+      </Auth0Provider>
+    </Router>
   </React.StrictMode>
 )
-
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js')
@@ -26,7 +33,3 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
-
-
-
-

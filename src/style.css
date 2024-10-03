@@ -6,15 +6,15 @@
  --black: black;
  --green: hsla(120, 100%, 25%, 0.807);
 }
-*{
+/* *{
   margin: 0;
   padding: 0;
   box-sizing: border-box; /*prevent input element e.g text from overflowing parent*/
-}
+/* } */ */
 html{
   font-size: 16px;
 }
-body {
+/* body {
  
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -23,7 +23,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: #dfdfdf;
   line-height: 1.5;
-}
+} */
 img{
   max-width: 100%;
   display: block;
