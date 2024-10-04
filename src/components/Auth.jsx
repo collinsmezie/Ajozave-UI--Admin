@@ -1,206 +1,3 @@
-// import React, { useState } from 'react';
-// import { useAuth0 } from "@auth0/auth0-react";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faBank, faFingerprint, faMoon, faUniversity } from "@fortawesome/free-solid-svg-icons";
-// import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
-
-// const Auth = () => {
-//   const [selectedOption, setSelectedOption] = useState('new');
-//   const [isExistingCustomer, setIsExistingCustomer] = useState(false);
-//   const [fullName, setFullName] = useState('');
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [errorMessage, setErrorMessage] = useState('');
-//   const { loginWithRedirect } = useAuth0();
-
-//   const handleOptionChange = (option) => {
-//     setSelectedOption(option);
-//   };
-
-//   const handleInputChange = (e, setState) => {
-//     setState(e.target.value);
-//   };
-
-//   const validateInputs = () => {
-
-//     if (!fullName) {
-//       setErrorMessage("Full Name is required.");
-//       return false;
-//     }
-
-//     if (!email || !password) {
-//       setErrorMessage("Email and password are required.");
-//       return false;
-//     }
-//     if (password.length < 6) {
-//       setErrorMessage("Password must be at least 6 characters long.");
-//       return false;
-//     }
-//     return true;
-//   };
-
-//   const register = async () => {
-//     setErrorMessage("");  // Clear any previous errors
-
-//     if (!validateInputs()) return;
-
-//     try {
-//       const response = await fetch('http://localhost:4000/admin/signup', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//           fullName,
-//           email,
-//           password
-//         })
-//       });
-
-
-
-//       if (!response.ok) {
-//         const data = await response.json();
-//         console.log("response here",response)
-//         throw new Error(data.message || 'Registration failed.');
-//       }
-
-//       console.log("success response here",response)
-
-//       // If successful, re-render with 'Existing Customer' option
-//       setIsExistingCustomer(true);
-//       setFullName('')
-//       setEmail('');
-//       setPassword('');
-//       setErrorMessage(''); // Clear error after successful registration
-
-//     } catch (error) {
-//       setErrorMessage(error.message);
-
-//     }
-//   };
-
-//   return (
-//     <div className="fixed w-full h-full max-w-sm p-4 overflow-hidden border-2 border-gray-200 rounded-lg shadow-lg">
-//       <div className="flex justify-between items-center">
-//         <div className="relative left-[300px] flex items-center justify-center w-8 h-8 bg-red-500 rounded-full">
-//           <div className="w-2 h-2 bg-white rounded-full relative bottom-[5px] left-[5px]"></div>
-//         </div>
-//       </div>
-//       <div className="flex justify-between items-center">
-//         <h1 className="text-2xl font-bold text-gray-600">Hello There</h1>
-//       </div>
-//       <h2 className="text-lg font-semibold mb-8">Let's get you started</h2>
-
-//       <div className="flex mb-12 border rounded-full">
-//         <div
-//           onClick={() => setIsExistingCustomer(false)}
-//           className={`flex-1 py-2 text-center cursor-pointer rounded-full ${!isExistingCustomer ? 'bg-red-500 text-white text-sm' : 'text-gray-600 text-sm'}`}
-//         >
-//           New Customer
-//         </div>
-//         <div
-//           onClick={() => setIsExistingCustomer(true)}
-//           className={`flex-1 py-2 text-center cursor-pointer rounded-full ${isExistingCustomer ? 'bg-red-500 text-white text-sm' : 'text-gray-600 text-sm'}`}
-//         >
-//           Existing Customer
-//         </div>
-//       </div>
-
-//       {!isExistingCustomer ? (
-//         <>
-
-//           <div className="mb-4 w-full p-2 border border-gray-300 bg-gray-200 rounded-lg">
-//             <label className="block text-gray-700 mb-2 text-sm">Full Name</label>
-//             <input
-//               type="text"
-//               value={fullName}
-//               onChange={(e) => handleInputChange(e, setFullName)}
-//               placeholder="Enter your full name"
-//               className="border-none bg-gray-200 outline-none w-full"
-//             />
-//           </div>
-
-//           <div className="mb-4 w-full p-2 border border-gray-300 bg-gray-200 rounded-lg">
-//             <label className="block text-gray-700 mb-2 text-sm">Email</label>
-//             <input
-//               type="text"
-//               value={email}
-//               onChange={(e) => handleInputChange(e, setEmail)}
-//               placeholder="Enter email address"
-//               className="border-none bg-gray-200 outline-none w-full"
-//             />
-//           </div>
-
-//           <div className="mb-4 relative w-full p-2 border border-gray-300 bg-gray-200 rounded-lg">
-//             <label className="block text-gray-700 mb-2 text-sm">Password</label>
-//             <input
-//               type="password"
-//               value={password}
-//               onChange={(e) => handleInputChange(e, setPassword)}
-//               placeholder="Enter password"
-//               className="border-none bg-gray-200 outline-none w-full"
-//             />
-//             <button className="absolute right-3 top-3">
-//               <i className="fas fa-eye text-l text-gray-400"></i>
-//             </button>
-//           </div>
-
-//         </>
-//       ) : (
-//         <div className="mb-4 relative w-full p-2 border border-gray-300 bg-gray-200 rounded-lg">
-//           <label className="block text-gray-700 mb-2 text-sm">Password</label>
-//           <input
-//             type="password"
-//             value={password}
-//             onChange={(e) => handleInputChange(e, setPassword)}
-//             placeholder="Enter password"
-//             className="border-none bg-gray-200 outline-none w-full"
-//           />
-//           <button className="absolute right-3 top-3">
-//             <i className="fas fa-eye text-l text-gray-400"></i>
-//           </button>
-//         </div>
-//       )}
-
-//       <button className="text-sm text-black-500 mb-4">Forgot Password?</button>
-
-//       {errorMessage && (
-//         <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
-//       )}
-
-//       {!isExistingCustomer ? (
-//         <button
-//           className="w-full py-3 border border-gray-300 text-black rounded-lg mb-8"
-//           onClick={register}
-//         >
-//           Register
-//         </button>
-//       ) : (
-//         <button
-//           className="w-full py-3 border border-gray-300 text-black rounded-lg mb-8"
-//           onClick={login}
-//         >
-//           Log In
-//         </button>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Auth;
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from 'react';
 import { useAuth0 } from "@auth0/auth0-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -226,6 +23,12 @@ const Auth = () => {
   };
 
   const validateInputs = () => {
+
+    if (!fullName) {
+      setErrorMessage("Full Name is required.");
+      return false;
+    }
+
     if (!email || !password) {
       setErrorMessage("Email and password are required.");
       return false;
@@ -243,7 +46,8 @@ const Auth = () => {
     if (!validateInputs()) return;
 
     try {
-      const response = await fetch('http://localhost:4000/admin/signup', {
+      // const response = await fetch('http://localhost:4000/admin/signup', {
+      const response = await fetch('https://ajozave-api.onrender.com/admin/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -277,7 +81,8 @@ const Auth = () => {
     if (!validateInputs()) return;
 
     try {
-      const response = await fetch('http://localhost:4000/admin/login', {
+      // const response = await fetch('http://localhost:4000/admin/login', {
+      const response = await fetch('https://ajozave-api.onrender.com/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
