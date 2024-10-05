@@ -91,7 +91,7 @@
 
 //     try {
 //       const response = await fetch('http://localhost:4000/admin/login', {
-//       // const response = await fetch('https://ajozave-api.onrender.com/admin/login', {
+// const response = await fetch('https://ajozave-api.onrender.com/admin/login', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
@@ -317,6 +317,7 @@ const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const { loginWithRedirect } = useAuth0();
   const navigate = useNavigate();
 
@@ -326,6 +327,10 @@ const Auth = () => {
 
   const handleInputChange = (e, setState) => {
     setState(e.target.value);
+  };
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
   };
 
   const validateSignUpInputs = () => {
@@ -357,7 +362,9 @@ const Auth = () => {
     if (!validateSignUpInputs()) return;
 
     try {
-      const response = await fetch('http://localhost:4000/admin/signup', {
+      const response = await fetch('https://ajozave-api.onrender.com/admin/signup', {
+
+        // const response = await fetch('http://localhost:4000/admin/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -385,7 +392,9 @@ const Auth = () => {
     if (!validateLoginInputs()) return;
 
     try {
-      const response = await fetch('http://localhost:4000/admin/login', {
+      // const response = await fetch('http://localhost:4000/admin/login', {
+
+      const response = await fetch('https://ajozave-api.onrender.com/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -414,7 +423,7 @@ const Auth = () => {
 
     <div className="w-full max-w-sm p-6 bg-white">
 
-      <h1 className="text-2xl font-bold text-center text-gray-600 mb-4">Hello There</h1>
+      <h1 className="text-2xl font-bold text-center text-gray-600 mb-2">Hello There</h1>
       <h2 className="text-lg font-semibold text-center mb-6">Let's get you started</h2>
 
       <div className="flex mb-12 border rounded-full">
@@ -461,14 +470,18 @@ const Auth = () => {
       <div className="mb-4 relative">
         <label className="block text-gray-700 mb-2">Password</label>
         <input
-          type="password"
+          type={isPasswordVisible ? 'text' : 'password'}
           value={password}
           onChange={(e) => handleInputChange(e, setPassword)}
           placeholder="Enter password"
           className="border border-gray-300 rounded-lg p-2 w-full"
         />
-        <button className="absolute right-3 top-10">
-          <i className="fas fa-eye text-l text-gray-400"></i>
+        <button
+          type="button"
+          className="absolute right-3 top-10"
+          onClick={togglePasswordVisibility}
+        >
+          <i className={`fas ${isPasswordVisible ? 'fa-eye-slash' : 'fa-eye'} text-l text-gray-400`}></i>
         </button>
       </div>
 
