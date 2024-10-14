@@ -35,7 +35,7 @@ const Dashboard = () => {
         <h2 className="text-white text-lg font-semibold">HISTORY</h2>
         <div className="flex items-center justify-between mt-2">
           <div className="flex flex-col items-center">
-            <div className="relative w-20 h-20">
+            <div className="relative w-24 h-24">
               <CircularProgressbar
                 value={percentagePaymentsMade}
                 text={`${percentagePaymentsMade.toFixed(0)}%`}
@@ -59,10 +59,10 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="text-white">
-            <p className="font-bold text-lg">₦{totalContributions.toLocaleString()}</p>
             <p className="text-sm">TOTAL CONTRIBUTIONS</p>
-            <p className="font-bold text-lg">₦{remainingPayments.toLocaleString()}</p>
+            <p className="font-bold text-lg mb-2">₦{totalContributions.toLocaleString()}</p>
             <p className="text-sm">REMAINING PAYMENTS</p>
+            <p className="font-bold text-lg">₦{remainingPayments.toLocaleString()}</p>
           </div>
         </div>
         <div className="text-right mt-4">

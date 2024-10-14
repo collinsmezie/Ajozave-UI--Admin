@@ -120,8 +120,10 @@ const Auth = () => {
   return (
     <div className="w-full max-w-sm p-6 bg-white">
 
-      <h1 className="text-2xl font-bold text-center text-gray-600 mb-2">Hello There</h1>
-      <h2 className="text-lg font-semibold text-center mb-6">Let's get you started</h2>
+      <div className="text-2xl font-bold text-center text-gray-600 mb-6 font-bold text-red-600">Ajo<span className="text-gray-400">Zave</span></div>
+      {/* <h1 className="text-2xl font-bold text-center text-gray-600 mb-2">Hello There</h1> */}
+
+      <h2 className="text-lg font-semibold text-center mb-8">Let's get you started</h2>
 
       <div className="flex mb-12 border rounded-full">
         <div
