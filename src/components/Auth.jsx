@@ -120,7 +120,7 @@ const Auth = () => {
   return (
     <div className="w-full max-w-sm p-6 bg-white">
 
-      <div className="text-2xl font-bold text-center text-gray-600 mb-6 font-bold text-red-600">Ajo<span className="text-gray-400">Zave</span></div>
+      <div className="text-2xl font-bold text-center text-gray-600 mb-7 font-bold text-red-600">Ajo<span className="text-gray-400">Zave</span></div>
       {/* <h1 className="text-2xl font-bold text-center text-gray-600 mb-2">Hello There</h1> */}
 
       <h2 className="text-lg font-semibold text-center mb-8">Let's get you started</h2>
@@ -219,7 +219,7 @@ const Auth = () => {
       {/* OR separator */}
       <div className="flex items-center my-4">
         <div className="flex-grow border-t border-gray-300"></div>
-        <span className="mx-4 text-gray-500 text-sm">OR</span>
+        <span className="mx-4 text-gray-500 text-sm">OR USE</span>
         <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
