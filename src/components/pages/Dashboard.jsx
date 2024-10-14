@@ -10,7 +10,7 @@ const Dashboard = () => {
   const percentagePaymentsMade = ((totalContributions - remainingPayments) / totalContributions) * 100;
 
   return (
-    <div className="min-h-screen bg-purple-50 p-4">
+    <div className="animate-slide-in min-h-screen bg-purple-50 p-4">
       {/* Header Section */}
       <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-md">
         <div className="flex items-center space-x-2">
@@ -60,7 +60,7 @@ const Dashboard = () => {
           </div>
           <div className="text-white">
             <p className="text-sm">TOTAL CONTRIBUTIONS</p>
-            <p className="font-bold text-lg mb-2">₦{totalContributions.toLocaleString()}</p>
+            <p className="font-bold text-lg mb-3">₦{totalContributions.toLocaleString()}</p>
             <p className="text-sm">REMAINING PAYMENTS</p>
             <p className="font-bold text-lg">₦{remainingPayments.toLocaleString()}</p>
           </div>

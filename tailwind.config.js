@@ -1,13 +1,3 @@
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: [],
-//   theme: {
-//     extend: {},
-//   },
-//   plugins: [],
-// }
-
-
 module.exports = {
   content: [
     "./index.html",
@@ -17,8 +7,17 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Nunito', 'sans-serif'],
-      }
-    },
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateY(100%)' }, // Start from the bottom
+          '100%': { transform: 'translateY(0)' },   // End at the top (normal position)
+        },
+      },
+      animation: {
+        'slide-in': 'slideIn 0.5s ease-out forwards',
+      },
+    }
   },
   plugins: [],
 }
