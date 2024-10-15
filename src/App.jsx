@@ -4,6 +4,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import HomePage from './components/pages/Home';
 import AuthPage from './components/pages/AuthPage';
 import Dashboard from './components/pages/Dashboard';
+import CreateSessionPage from './components/pages/CreateSessionPage';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/authentication" element={<AuthPage />} />
             <Route path="/" element={<Navigate replace to="/authentication" />} />
+            <Route path="/create-session" element={<CreateSessionPage />} />
           </Routes>
         </div>
       </div>
