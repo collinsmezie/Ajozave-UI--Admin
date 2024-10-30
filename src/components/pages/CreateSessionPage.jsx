@@ -177,7 +177,8 @@ const CreateSessionPage = () => {
     // console.log("Token",token)
 
     try {
-      const response = await fetch('http://localhost:4000/api/session/new', {
+      const response = await fetch('https://ajozave-api.onrender.com/api/session/new', {
+      // const response = await fetch('http://localhost:4000/api/session/new', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,12 +200,12 @@ const CreateSessionPage = () => {
       if (response.status === 401) {
         setShowModal(true);
       } else if (response.ok) {
-        // setSessionName('');
-        // setContributionAmount('');
-        // setDuration('');
-        // setMembers('');
-        // setStartDate('');
-        // setEndDate('');
+        setSessionName('');
+        setContributionAmount('');
+        setDuration('');
+        setMembers('');
+        setStartDate('');
+        setEndDate('');
         setShowSuccessModal(true);
       } else {
         const errorData = await response.json();

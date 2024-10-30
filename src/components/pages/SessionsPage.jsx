@@ -138,7 +138,9 @@ const SessionsPage = () => {
     const fetchSessions = async () => {
       try {
         const token = localStorage.getItem('jwtToken');
-        const response = await fetch('http://localhost:4000/api/sessions', {
+       const response = await fetch('https://ajozave-api.onrender.com/api/sessions', {
+
+        // const response = await fetch('http://localhost:4000/api/sessions', {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
