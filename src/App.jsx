@@ -5,6 +5,8 @@ import HomePage from './components/pages/Home';
 import AuthPage from './components/pages/AuthPage';
 import Dashboard from './components/pages/Dashboard';
 import CreateSessionPage from './components/pages/CreateSessionPage';
+import SessionsPage from './components/pages/SessionsPage';
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
             <Route path="/authentication" element={<AuthPage />} />
             <Route path="/" element={<Navigate replace to="/authentication" />} />
             <Route path="/create-session" element={<CreateSessionPage />} />
+            <Route path="/sessions" element={<SessionsPage />} />
+
           </Routes>
         </div>
       </div>

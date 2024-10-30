@@ -1,25 +1,238 @@
+// import React, { useState } from 'react';
+// import BottomNavigation from '../BottomNavigation';
+
+// const CreateSessionPage = () => {
+//   // Form state
+//   const [sessionName, setSessionName] = useState('');
+//   const [contributionAmount, setContributionAmount] = useState('');
+//   const [duration, setDuration] = useState('');
+//   const [members, setMembers] = useState('');
+//   const [startDate, setStartDate] = useState('');
+//   const [endDate, setEndDate] = useState('');
+
+
+//   // Handler for form submission
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     // Here you would handle the session creation logic (e.g., API call)
+//     console.log('Creating session with data:', {
+//       sessionName,
+//       contributionAmount,
+//       duration,
+//       members,
+//       startDate,
+//       endDate
+//     });
+//   };
+
+//   return (
+//     <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
+//       <div className="flex-grow p-4 overflow-y-auto">
+//         {/* Header */}
+//         <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-md mb-4">
+//           <h2 className="font-bold text-lg text-gray-800">Create Session</h2>
+//         </div>
+
+//         {/* Form Section */}
+//         <div className="bg-white rounded-2xl p-4 shadow-md">
+//           <form onSubmit={handleSubmit} className="space-y-4">
+//             {/* Session Name */}
+//             <div>
+//               <label className="text-sm text-gray-600">Session Name</label>
+//               <input
+//                 type="text"
+//                 placeholder="Enter session name"
+//                 value={sessionName}
+//                 onChange={(e) => setSessionName(e.target.value)}
+//                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+//               />
+//             </div>
+
+//             {/* Contribution Amount */}
+//             <div>
+//               <label className="text-sm text-gray-600">Contribution Amount (₦)</label>
+//               <input
+//                 type="number"
+//                 placeholder="Enter contribution amount"
+//                 value={contributionAmount}
+//                 onChange={(e) => setContributionAmount(e.target.value)}
+//                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+//               />
+//             </div>
+
+//             {/* Duration */}
+//             <div>
+//               <label className="text-sm text-gray-600">Duration (Weeks)</label>
+//               <input
+//                 type="number"
+//                 placeholder="Enter session duration"
+//                 value={duration}
+//                 onChange={(e) => setDuration(e.target.value)}
+//                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+//               />
+//             </div>
+
+//             {/* Number of Members */}
+//             <div>
+//               <label className="text-sm text-gray-600">Number of Members</label>
+//               <input
+//                 type="number"
+//                 placeholder="Enter number of members"
+//                 value={members}
+//                 onChange={(e) => setMembers(e.target.value)}
+//                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+//               />
+//             </div>
+
+//             {/* Start Date */}
+//             <div>
+//               <label className="text-sm text-gray-600">Start Date</label>
+//               <input
+//                 type="date"
+//                 value={startDate}
+//                 onChange={(e) => setStartDate(e.target.value)}
+//                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+//               />
+//             </div>
+
+//             {/* End Date */}
+//             <div>
+//               <label className="text-sm text-gray-600">End Date</label>
+//               <input
+//                 type="date"
+//                 value={endDate}
+//                 onChange={(e) => setEndDate(e.target.value)}
+//                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+//               />
+//             </div>
+
+//             {/* Submit Button */}
+//             <div className="text-center">
+//               <button
+//                 type="submit"
+//                 className="w-full py-3 border border-gray-300 text-black rounded-lg mt-8 bg-purple-600 text-white hover:bg-purple-700 transition duration-300 flex items-center justify-center"
+//               >
+//                 Create Session
+//               </button>
+//             </div>
+//           </form>
+//         </div>
+//       </div>
+
+//       <BottomNavigation />
+//     </div>
+//   );
+// };
+
+// export default CreateSessionPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useState } from 'react';
 import BottomNavigation from '../BottomNavigation';
+// import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 const CreateSessionPage = () => {
-  // Form state
   const [sessionName, setSessionName] = useState('');
   const [contributionAmount, setContributionAmount] = useState('');
   const [duration, setDuration] = useState('');
   const [members, setMembers] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [createSessionLoading, setCreateSessionLoading] = useState(false);
 
-  // Handler for form submission
-  const handleSubmit = (e) => {
+  // const history = useHistory();
+  const navigate = useNavigate();
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would handle the session creation logic (e.g., API call)
-    console.log('Creating session with data:', {
-      sessionName,
-      contributionAmount,
-      duration,
-      members,
-      startDate,
-    });
+    setCreateSessionLoading(true)
+
+    const token = localStorage.getItem('jwtToken'); // Assuming the JWT token is stored in localStorage
+    // console.log("Token",token)
+
+    try {
+      const response = await fetch('http://localhost:4000/api/session/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          sessionName,
+          contributionAmount: Number(contributionAmount),
+          duration: Number(duration),
+          numberOfMembers: Number(members),
+          startDate,
+          endDate
+        })        
+      });
+
+      console.log("Response Here", response)
+
+
+      if (response.status === 401) {
+        setShowModal(true);
+      } else if (response.ok) {
+        // setSessionName('');
+        // setContributionAmount('');
+        // setDuration('');
+        // setMembers('');
+        // setStartDate('');
+        // setEndDate('');
+        setShowSuccessModal(true);
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to create session:', {
+          status: response.status,
+          statusText: response.statusText,
+          errorData
+        });
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    } finally {
+      setCreateSessionLoading(false)
+    }
+  };
+
+  const handleLoginRedirect = () => {
+    setShowModal(false);
+    // history.push('/login'); // Redirects to login page
+    navigate('/authentication');
+
+  };
+
+  const handleAddMembers = () => {
+    setShowSuccessModal(false);
+    // history.push('/add-members'); // Redirects to add members page
+    navigate('/dashboard');
+
   };
 
   return (
@@ -27,7 +240,7 @@ const CreateSessionPage = () => {
       <div className="flex-grow p-4 overflow-y-auto">
         {/* Header */}
         <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-md mb-4">
-          <h2 className="font-bold text-lg text-gray-800">Create New Ajo Session</h2>
+          <h2 className="font-bold text-lg text-gray-800">Create Session</h2>
         </div>
 
         {/* Form Section */}
@@ -44,6 +257,8 @@ const CreateSessionPage = () => {
                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
               />
             </div>
+
+            {/* Other input fields as in your initial code... */}
 
             {/* Contribution Amount */}
             <div>
@@ -92,13 +307,31 @@ const CreateSessionPage = () => {
               />
             </div>
 
+            {/* End Date */}
+            <div>
+              <label className="text-sm text-gray-600">End Date</label>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+              />
+            </div>
+
+
             {/* Submit Button */}
             <div className="text-center">
               <button
                 type="submit"
                 className="w-full py-3 border border-gray-300 text-black rounded-lg mt-8 bg-purple-600 text-white hover:bg-purple-700 transition duration-300 flex items-center justify-center"
-                >
-                Create Session
+                disabled={createSessionLoading} // Disable button when loading
+
+              >
+                {createSessionLoading ? (
+                  <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                ) : (
+                  "Create Session"
+                )}
               </button>
             </div>
           </form>
@@ -106,6 +339,46 @@ const CreateSessionPage = () => {
       </div>
 
       <BottomNavigation />
+
+      {/* Modal for Expired Token */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h3 className="text-lg font-semibold text-gray-700">Session Expired</h3>
+            <p className="text-gray-600 mt-2">Please log in again to continue.</p>
+            <button
+              onClick={handleLoginRedirect}
+              className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-2xl shadow-lg text-center max-w-sm mx-auto">
+            <h3 className="text-xl font-bold text-purple-600">Session Created Successfully!</h3>
+            <p className="text-gray-600 mt-3">Your new session has been created. You can now add members to the session.</p>
+            <div className="mt-6 flex justify-center space-x-4">
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+              >
+                Close
+              </button>
+              <button
+                onClick={handleAddMembers}
+                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              >
+                Add Members
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

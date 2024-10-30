@@ -11,7 +11,7 @@ const BottomNavigation = () => {
 
   const navItems = [
     { name: 'Home', icon: <HomeIcon className="h-6 w-6 text-purple-400" />, path: '/dashboard' },
-    { name: 'Wallet', icon: <WalletIcon className="h-6 w-6 text-purple-300" />, path: '/wallet' },
+    { name: 'Wallet', icon: <WalletIcon className="h-6 w-6 text-purple-300" />, path: '/sessions' },
     { name: 'Create Session', icon: <PlusCircleIcon className="h-12 w-12 text-purple-600" />, path: '/create-session' },
     { name: 'Menu', icon: <UserCircleIcon className="h-6 w-6 text-purple-300" />, path: '/menu' },
   ];

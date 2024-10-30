@@ -90,7 +90,9 @@ const Auth = () => {
 
     setLoginLoading(true); // Set loading to true when starting
     try {
-      const response = await fetch('https://ajozave-api.onrender.com/admin/login', {
+      // const response = await fetch('https://ajozave-api.onrender.com/admin/login', {
+      const response = await fetch('http://localhost:4000/admin/login', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
