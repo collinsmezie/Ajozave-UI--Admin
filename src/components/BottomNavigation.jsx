@@ -79,7 +79,8 @@ const BottomNavigation = () => {
   ];
 
   return (
-    <div className="sticky bottom-0 bg-white shadow-lg flex justify-evenly items-center py-2 px-2 sm:px-8 lg:px-12 w-full">
+    // <div className="sticky bottom-0 bg-white shadow-lg flex justify-evenly items-center py-2 px-2 sm:px-8 lg:px-12 w-full">
+    <div className="sticky bottom-0 bg-white shadow-lg flex justify-evenly items-center py-2 px-2 sm:px-8 lg:px-12 w-full z-10">
       {navItems.map((item, index) => (
         <div
           key={index}
