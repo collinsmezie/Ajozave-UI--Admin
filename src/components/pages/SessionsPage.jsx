@@ -69,7 +69,7 @@ const SessionsPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-purple-50 animate-slide-in">
-      <header className="flex items-center justify-between p-4 bg-white shadow-md rounded-b-2xl">
+      <header className="flex items-center justify-between p-4 bg-white shadow-sm rounded-b-2xl">
         <h1 className="text-2xl font-semibold text-purple-700">My Sessions</h1>
         <Link to="/sessions/new" className="text-purple-700">
           <FiPlusCircle size={28} />
@@ -87,7 +87,7 @@ const SessionsPage = () => {
             <Link
               key={session._id}
               to={`/sessions/${session._id}`}
-              className="block bg-white rounded-2xl p-4 mb-4 shadow-md hover:bg-purple-50 transition duration-200 cursor-pointer"
+              className="block bg-white rounded-xl p-4 mb-4 shadow-sm hover:bg-purple-50 transition duration-200 cursor-pointer"
             >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-purple-700">{session.sessionName}</h2>
@@ -98,15 +98,15 @@ const SessionsPage = () => {
               <div className="flex justify-between items-center mt-2">
                 <div>
                   <p className="text-sm text-gray-500">Contribution</p>
-                  <p className="text-lg font-bold text-gray-800">₦{session.contributionAmount.toLocaleString()}</p>
+                  <p className="text-lg font-bold text-gray-600">₦{session.contributionAmount.toLocaleString()}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Duration</p>
-                  <p className="text-lg font-bold text-gray-800">{session.duration} weeks</p>
+                  <p className="text-lg font-bold text-gray-500">{session.duration} weeks</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-500">Start Date</p>
-                  <p className="text-lg font-bold text-gray-800">{new Date(session.startDate).toLocaleDateString()}</p>
+                  <p className="text-lg font-bold text-gray-500">{new Date(session.startDate).toLocaleDateString()}</p>
                 </div>
               </div>
             </Link>

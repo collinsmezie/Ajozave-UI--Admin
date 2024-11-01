@@ -82,12 +82,12 @@ const CreateSessionPage = () => {
     <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
       <div className="flex-grow p-4 overflow-y-auto">
         {/* Header */}
-        <header className="flex items-center justify-between p-4 bg-white shadow-md rounded-b-2xl mb-4">
+        <header className="flex items-center justify-between p-4 bg-white mb-4">
           <h1 className="text-2xl font-semibold text-purple-700">Create Session</h1>
         </header>
 
         {/* Form Section */}
-        <div className="bg-white rounded-2xl p-4 shadow-md">
+        <div className="bg-white rounded-2xl p-4 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Session Name */}
             <div>

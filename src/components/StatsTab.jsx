@@ -3,7 +3,7 @@ import React from 'react';
 const StatsTab = () => (
   <div className="flex flex-col space-y-4">
     {/* Graph Section */}
-    <div className="bg-white rounded-2xl p-4 shadow-md">
+    <div className="bg-white rounded-2xl p-4 shadow-sm">
       <div className="flex justify-between items-center">
         <h3 className="font-semibold text-lg">Contribution Progress</h3>
         <p className="text-sm text-gray-500">Weekly</p>
