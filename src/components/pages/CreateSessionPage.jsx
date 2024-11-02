@@ -23,7 +23,7 @@ const CreateSessionPage = () => {
     const token = localStorage.getItem('jwtToken'); // Assuming the JWT token is stored in localStorage
 
     try {
-      const response = await fetch('https://ajozave-api.onrender.com/api/session/new', {
+      const response = await fetch('https://ajozave-api.onrender.com/api/sessions/new', {
         // const response = await fetch('http://localhost:4000/api/session/new', {
         method: 'POST',
         headers: {

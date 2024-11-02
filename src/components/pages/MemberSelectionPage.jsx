@@ -41,8 +41,6 @@ const MemberSelectionPage = () => {
           return;
         }
 
-        // console.log("SESSION ID HERE", sessionId)
-
         if (!response.ok) {
           throw new Error('Failed to fetch members');
         }
@@ -71,8 +69,8 @@ const MemberSelectionPage = () => {
     setSubmitLoading(true);
     try {
       const token = localStorage.getItem('jwtToken');
-      // await fetch('https://ajozave-api.onrender.com/api/sessions/add-members', {
-      await fetch('http://localhost:4000/api/sessions/add-members', {
+      await fetch('https://ajozave-api.onrender.com/api/sessions/add-members', {
+      // await fetch('http://localhost:4000/api/sessions/add-members', {
 
         method: 'PUT',
         headers: {
