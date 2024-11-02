@@ -57,9 +57,12 @@ const SessionsPage = () => {
 
   if (loading) {
     return (
+    <>
       <div className="flex items-center justify-center min-h-screen">
         <ClipLoader color="#8b5cf6" size={40} />
       </div>
+      <BottomNavigation />
+    </>
     );
   }
 
@@ -69,7 +72,7 @@ const SessionsPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-purple-50 animate-slide-in">
-      <header className="flex items-center justify-between p-4 bg-white shadow-sm rounded-b-2xl">
+      <header className="flex items-center justify-between p-4 bg-white shadow-sm">
         <h1 className="text-2xl font-semibold text-purple-700">My Sessions</h1>
         <Link to="/sessions/new" className="text-purple-700">
           <FiPlusCircle size={28} />
@@ -87,7 +90,7 @@ const SessionsPage = () => {
             <Link
               key={session._id}
               to={`/sessions/${session._id}`}
-              className="block bg-white rounded-xl p-4 mb-4 shadow-sm hover:bg-purple-50 transition duration-200 cursor-pointer"
+              className="block bg-white rounded-xl p-4 mb-4 shadow-sm transform transition-all duration-200 ease-in-out cursor-pointer hover:scale-105 focus:scale-105 active:scale-95 focus-within:outline-none focus-within:ring-2 focus-within:ring-purple-200"
             >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-purple-700">{session.sessionName}</h2>
@@ -110,6 +113,7 @@ const SessionsPage = () => {
                 </div>
               </div>
             </Link>
+
           ))
         )}
       </div>

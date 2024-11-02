@@ -23,7 +23,7 @@ function App() {
             <Route path="/create-session" element={<CreateSessionPage />} />
             <Route path="/sessions/:sessionId" element={<SessionDetailsPage />} />
             <Route path="/sessions" element={<SessionsPage />} />
-            <Route path="/members" element={<MemberSelectionPage />} />
+            <Route path="/sessions/:sessionId/members" element={<MemberSelectionPage />} />
           </Routes>
         </div>
       </div>

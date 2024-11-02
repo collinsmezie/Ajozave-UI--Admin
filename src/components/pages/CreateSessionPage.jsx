@@ -87,7 +87,7 @@ const CreateSessionPage = () => {
         </header>
 
         {/* Form Section */}
-        <div className="bg-white rounded-2xl p-4 shadow-sm">
+        <div className="bg-white rounded-xl p-4 shadow-sm">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Session Name */}
             <div>
