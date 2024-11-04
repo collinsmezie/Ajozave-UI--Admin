@@ -10,11 +10,11 @@ const BottomNavigation = () => {
   };
 
   const navItems = [
-    { name: 'Home', icon: <HomeIcon className="h-6 w-6 text-purple-400" />, path: '/dashboard' },
-    { name: 'Sessions', icon: <EyeIcon className="h-6 w-6 text-purple-300" />, path: '/sessions' },
-    { name: 'Create Session', icon: <PlusCircleIcon className="h-16 w-16 text-purple-500 transform transition duration-200 hover:scale-110 mt-2" />, path: '/create-session' },
-    { name: 'Wallet', icon: <WalletIcon className="h-6 w-6 text-purple-300" />, path: '/wallet' },
-    { name: 'Menu', icon: <UserCircleIcon className="h-6 w-6 text-purple-300" />, path: '/menu' },
+    { name: 'Home', icon: <HomeIcon className="h-5 w-5 text-purple-400" />, path: '/dashboard' },
+    { name: 'Sessions', icon: <EyeIcon className="h-5 w-5 text-purple-300" />, path: '/sessions' },
+    { name: 'Create Session', icon: <PlusCircleIcon className="h-14 w-14 text-purple-500 transform transition duration-200 hover:scale-110 mt-2" />, path: '/create-session' },
+    { name: 'Wallet', icon: <WalletIcon className="h-5 w-5 text-purple-300" />, path: '/wallet' },
+    { name: 'Menu', icon: <UserCircleIcon className="h-5 w-5 text-purple-300" />, path: '/menu' },
   ];
 
   return (

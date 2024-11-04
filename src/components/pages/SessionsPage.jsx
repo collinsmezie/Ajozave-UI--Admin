@@ -32,7 +32,6 @@ const SessionsPage = () => {
         }
 
         const data = await response.json();
-        console.log("Data here", data)
         setSessions(data.sessions);
       } catch (err) {
         setError(err.message);
