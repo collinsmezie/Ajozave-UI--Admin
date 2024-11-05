@@ -4,10 +4,14 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import App from './App.jsx'
 import './style.css'
 import '../index.css'
-import { BrowserRouter as Router} from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { Provider } from 'react-redux';
+import store from './store/store.js';
+
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <Auth0Provider
         domain="dev-vcujy8hpx2rawtkt.us.auth0.com"
@@ -17,10 +21,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           redirect_uri: "http://localhost:5173/home"
         }}
       >
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>,
+
       </Auth0Provider>
     </Router>
-  </React.StrictMode>
+  // </React.StrictMode>
 )
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
