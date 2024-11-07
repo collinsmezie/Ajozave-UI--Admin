@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiPlusCircle } from 'react-icons/fi';
-import BottomNavigation from '../BottomNavigation';
 import ClipLoader from 'react-spinners/ClipLoader';
 
 const SessionsPage = () => {
@@ -56,12 +55,9 @@ const SessionsPage = () => {
 
   if (loading) {
     return (
-    <>
       <div className="flex items-center justify-center min-h-screen">
         <ClipLoader color="#8b5cf6" size={40} />
       </div>
-      <BottomNavigation />
-    </>
     );
   }
 
@@ -116,9 +112,6 @@ const SessionsPage = () => {
           ))
         )}
       </div>
-
-      {/* Bottom Navigation */}
-      <BottomNavigation />
 
       {/* Session Expired Modal */}
       {showModal && (

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import BottomNavigation from '../BottomNavigation';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -80,7 +79,7 @@ const CreateSessionPage = () => {
 
   return (
     <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
-      <div className="flex-grow p-4 overflow-y-auto">
+      <div className="flex-grow p-2 overflow-y-auto">
         {/* Header */}
         <header className="flex items-center justify-between p-4 bg-white mb-4">
           <h1 className="text-2xl font-semibold text-purple-700">Create Session</h1>
@@ -178,8 +177,6 @@ const CreateSessionPage = () => {
           </form>
         </div>
       </div>
-
-      <BottomNavigation />
 
       {/* Modal for Expired Token */}
       {showModal && (

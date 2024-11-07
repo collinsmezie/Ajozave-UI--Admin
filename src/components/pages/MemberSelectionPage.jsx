@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FiCheckCircle, FiCircle, FiCheck, FiUserPlus, FiPhone } from 'react-icons/fi';
 import { ClipLoader } from 'react-spinners';
 import { useNavigate, useParams } from 'react-router-dom';
-import BottomNavigation from '../BottomNavigation';
 
 const MemberSelectionPage = () => {
   const { sessionId } = useParams();
@@ -12,6 +11,8 @@ const MemberSelectionPage = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false)
+  const [errorText, setErrorText] = useState('')
 
   const navigate = useNavigate();
 
@@ -69,7 +70,9 @@ const MemberSelectionPage = () => {
     setSubmitLoading(true);
     try {
       const token = localStorage.getItem('jwtToken');
-      await fetch('https://ajozave-api.onrender.com/api/sessions/add-members', {
+      const response = await fetch('https://ajozave-api.onrender.com/api/sessions/add-members', {
+        // const response = await fetch('http://localhost:4000/api/sessions/add-members', {
+
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -80,6 +83,23 @@ const MemberSelectionPage = () => {
           members: selectedMembers
         })
       });
+
+      const info = await response.json()
+
+      console.log("RESPONSE", info)
+
+
+      if (response.status === 401) {
+        setShowModal(true);
+        return;
+      }
+
+      if (response.status === 400) {
+        setErrorModal(true)
+        setErrorText(info.error)
+        return
+
+      }
 
       navigate(`/sessions/${sessionId}`);
     } catch (err) {
@@ -104,7 +124,6 @@ const MemberSelectionPage = () => {
         <div className="text-center text-red-500 p-4">{error}</div>
       ) : (
         <div className="flex flex-col flex-grow p-4">
-          {/* Scrollable member list */}
           <div className="flex-grow overflow-y-auto">
             {members.map((member) => (
               <div
@@ -133,7 +152,6 @@ const MemberSelectionPage = () => {
             ))}
           </div>
 
-          {/* Confirm selection button, fixed after the scrollable list */}
           <button
             onClick={handleConfirmSelection}
             disabled={submitLoading || selectedMembers.length === 0}
@@ -170,11 +188,34 @@ const MemberSelectionPage = () => {
           </div>
         </>
       )}
-
-      <BottomNavigation />
+      
+      {errorModal && (
+        <>
+          <style>{`body { overflow: hidden; }`}</style>
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-md md:max-w-lg">
+              <h3 className="text-lg font-semibold text-gray-700">Message</h3>
+              <p className="text-gray-600 mt-2 text-sm md:text-base overflow-y-auto max-h-60">
+                {errorText}
+              </p>
+              {/* <button
+                onClick={() => setErrorModal(false)}
+                className="mt-4 px-4 py-2 w-full md:w-auto bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              >
+                Go Back
+              </button> */}
+              <button
+                onClick={() => setErrorModal(false)}
+                className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
 export default MemberSelectionPage;
-

@@ -7,6 +7,8 @@ export const fetchSessionDetails = createAsyncThunk(
     try {
       const token = localStorage.getItem('jwtToken');
       const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}`, {
+        // const response = await fetch(`http://localhost:4000/api/sessions/${sessionId}`, {
+
         headers: { 'Authorization': `Bearer ${token}` },
       });
 
@@ -15,6 +17,7 @@ export const fetchSessionDetails = createAsyncThunk(
       }
 
       if (!response.ok) {
+        console.log("RESPONSE", response)
         throw new Error('Failed to fetch session details');
       }
 

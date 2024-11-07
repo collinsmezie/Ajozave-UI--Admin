@@ -6,7 +6,6 @@ import StatsTab from '../StatsTab';
 import SessionsTab from '../SessionsTab';
 import GoalsTab from '../GoalsTab';
 import MembersTab from '../MembersTab';
-import BottomNavigation from '../BottomNavigation';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('Stats');
@@ -51,7 +50,7 @@ const Dashboard = () => {
     <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
       <div className="flex-grow p-4 overflow-y-auto">
         {/* Header Section */}
-        <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm">
+        {/* <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm">
           <div className="flex items-center space-x-2">
             <div className="flex flex-col">
               <p className="text-gray-700 text-sm">Your Total Contribution</p>
@@ -65,7 +64,7 @@ const Dashboard = () => {
               <span className="text-xs font-normal">₦20,800</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Payment History Card */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-2xl p-4 mt-4 shadow-md">
@@ -121,7 +120,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <BottomNavigation />
     </div>
   );
 };
