@@ -49,23 +49,6 @@ const Dashboard = () => {
   return (
     <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
       <div className="flex-grow p-4 overflow-y-auto">
-        {/* Header Section */}
-        {/* <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm">
-          <div className="flex items-center space-x-2">
-            <div className="flex flex-col">
-              <p className="text-gray-700 text-sm">Your Total Contribution</p>
-              <p className="font-bold text-lg">₦250,000</p>
-              <p className="text-xs text-gray-500">Across 5 sessions</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4">
-            <div className="bg-purple-100 text-purple-600 text-xs font-semibold py-1 px-3 rounded-full flex flex-col items-center mb-4">
-              <span className="text-sm">Upcoming Pay</span>
-              <span className="text-xs font-normal">₦20,800</span>
-            </div>
-          </div>
-        </div> */}
-
         {/* Payment History Card */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-2xl p-4 mt-4 shadow-md">
           <h2 className="text-white text-lg font-semibold">HISTORY</h2>
