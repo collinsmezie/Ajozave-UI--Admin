@@ -69,8 +69,8 @@ const SessionsPage = () => {
     <div className="flex flex-col min-h-screen bg-purple-50 animate-slide-in">
       <header className="flex items-center justify-between p-4 bg-white shadow-sm">
         <h1 className="text-2xl font-semibold text-purple-700">My Sessions</h1>
-        <Link to="/sessions/new" className="text-purple-700">
-          <FiPlusCircle size={28} />
+        <Link to="/create-session" className="text-purple-700">
+          <FiPlusCircle size={34} />
         </Link>
       </header>
 

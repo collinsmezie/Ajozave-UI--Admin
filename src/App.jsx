@@ -52,6 +52,7 @@ import SessionsPage from './components/pages/SessionsPage';
 import SessionDetailsPage from './components/pages/SessionDetailsPage';
 import MemberSelectionPage from './components/pages/MemberSelectionPage';
 import BottomNavigation from './components/BottomNavigation';
+import ComingSoon from './components/comingSoonPage';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -71,6 +72,7 @@ function App() {
           <Route path="/sessions/:sessionId" element={<SessionDetailsPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/sessions/:sessionId/members" element={<MemberSelectionPage />} />
+          <Route path="/coming-soon" element={<ComingSoon />} />
         </Routes>
         {!isAuthPage && <BottomNavigation />}
       </div>
