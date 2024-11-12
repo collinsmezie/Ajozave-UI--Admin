@@ -166,7 +166,7 @@ const SessionDetailsPage = () => {
                     className="text-red-500 hover:bg-red-100 p-2 rounded-lg"
                   >
                     {deletingMember === obj.member._id ? (
-                      <ClipLoader size={18} color="#8b5cf6" />
+                      <ClipLoader size={25} color="#8b5cf6" />
                     ) : (
                       <FiTrash2 size={20} />
                     )}
