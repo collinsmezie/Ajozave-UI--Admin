@@ -69,9 +69,17 @@ const SessionsPage = () => {
     <div className="flex flex-col min-h-screen bg-purple-50 animate-slide-in">
       <header className="flex items-center justify-between p-4 bg-white shadow-sm">
         <h1 className="text-2xl font-semibold text-purple-700">My Sessions</h1>
-        <Link to="/create-session" className="text-purple-700">
+        {/* <Link to="/create-session" className="text-purple-700">
           <FiPlusCircle size={34} />
+        </Link> */}
+        <Link
+          to="/create-session"
+          className="bg-gradient-to-r from-purple-500 to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
+          title="Create a Session"
+        >
+          <FiPlusCircle size={31} />
         </Link>
+
       </header>
 
       {/* List of Sessions */}

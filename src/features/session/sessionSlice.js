@@ -90,7 +90,7 @@ const sessionSlice = createSlice({
         }
       })
       .addCase(deleteMember.pending, (state) => {
-        state.loading = true;
+        state.loading = false;
         state.error = null;
       })
       .addCase(deleteMember.fulfilled, (state, action) => {

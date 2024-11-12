@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FiEdit3, FiUserPlus, FiTrash2, FiPhone } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSessionDetails, deleteMember, setModalVisibility } from '../../features/session/sessionSlice'
+import { fetchSessionDetails, deleteMember, setModalVisibility } from '../../features/session/sessionSlice';
 
 const SessionDetailsPage = () => {
   const { sessionId } = useParams();
@@ -13,7 +13,7 @@ const SessionDetailsPage = () => {
 
   const { session, members, loading, error, showModal } = useSelector((state) => state.session);
 
-  // console.log("LOOK", session, members, loading, error, showModal)
+  const [deletingMember, setDeletingMember] = useState(null); // Track member being deleted
 
   // Calculate remaining members needed to reach target
   const calculateRemainingMembers = () => {
@@ -23,7 +23,7 @@ const SessionDetailsPage = () => {
   const handleNavigation = () => {
     const remainingMembers = calculateRemainingMembers();
     if (remainingMembers === 0) {
-      console.log("Session started");
+      console.log('Session started');
     } else {
       navigate(`/sessions/${sessionId}/members`);
     }
@@ -40,13 +40,14 @@ const SessionDetailsPage = () => {
     return newNumber;
   };
 
-
   useEffect(() => {
     dispatch(fetchSessionDetails(sessionId));
   }, [dispatch, sessionId]);
 
-  const handleDeleteMember = (memberId) => {
-    dispatch(deleteMember({ sessionId, memberId }));
+  const handleDeleteMember = async (memberId) => {
+    setDeletingMember(memberId); // Set the member as being deleted
+    await dispatch(deleteMember({ sessionId, memberId })); // Wait for the deletion to complete
+    setDeletingMember(null); // Reset the deleting state
   };
 
   if (showModal) {
@@ -79,28 +80,17 @@ const SessionDetailsPage = () => {
     );
   }
 
-
   if (error) {
     return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
   }
 
   const remainingMembers = calculateRemainingMembers();
-  const buttonText = remainingMembers === 0 ? "Start Session" : `Add ${remainingMembers} Member${remainingMembers > 1 ? 's' : ''}`;
+  const buttonText = remainingMembers === 0 ? 'Start Session' : `Add ${remainingMembers} Member${remainingMembers > 1 ? 's' : ''}`;
 
   return (
     <>
       <div>
         <div className="flex flex-col min-h-screen bg-purple-50 p-4">
-          {/* <header className="flex items-center justify-between w-full p-4 bg-white mb-4">
-            <h1 className="text-xl sm:text-2xl font-semibold text-purple-700">Session Details</h1>
-            <button
-              className="text-purple-700 p-2 rounded-full hover:bg-purple-100 transition"
-              onClick={() => navigate(`/sessions/${sessionId}/edit`)}
-            >
-              <FiEdit3 size={24} />
-            </button>
-          </header> */}
-
           <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm mb-6">
             <div className="flex items-center space-x-2">
               <div className="flex flex-col">
@@ -121,7 +111,9 @@ const SessionDetailsPage = () => {
             <div className="flex justify-between items-center mb-5">
               <h2 className="text-xl font-semibold text-purple-600">{session.sessionName}</h2>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-medium tracking-wide ${session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'}`}
+                className={`px-3 py-1 rounded-full text-xs font-medium tracking-wide ${
+                  session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                }`}
               >
                 {session.status === 'active' ? 'Active' : 'Inactive'}
               </span>
@@ -173,7 +165,11 @@ const SessionDetailsPage = () => {
                     onClick={() => handleDeleteMember(obj.member._id)}
                     className="text-red-500 hover:bg-red-100 p-2 rounded-lg"
                   >
-                    <FiTrash2 size={20} />
+                    {deletingMember === obj.member._id ? (
+                      <ClipLoader size={18} color="#8b5cf6" />
+                    ) : (
+                      <FiTrash2 size={20} />
+                    )}
                   </button>
                 </div>
               ))
@@ -197,8 +193,3 @@ const SessionDetailsPage = () => {
 };
 
 export default SessionDetailsPage;
-
-
-
-
-
