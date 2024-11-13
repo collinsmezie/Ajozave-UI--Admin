@@ -11,6 +11,15 @@ const SessionsPage = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
+  // window.scrollTo(0, document.body.scrollHeight);
+
+  useEffect(() => {
+    // Scroll to the top of the page when the component renders
+    window.scrollTo(0, 0);
+  }, []);
+  
+
+
   useEffect(() => {
     const fetchSessions = async () => {
       try {
@@ -27,7 +36,8 @@ const SessionsPage = () => {
         }
 
         if (!response.ok) {
-          throw new Error('Failed to fetch sessions');
+          const errorMessage = await response.json()
+          throw new Error(errorMessage.error);
         }
 
         const data = await response.json();
@@ -60,10 +70,7 @@ const SessionsPage = () => {
       </div>
     );
   }
-
-  if (error) {
-    return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
-  }
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-purple-50 animate-slide-in">
@@ -86,8 +93,9 @@ const SessionsPage = () => {
       <div className="flex-grow p-4 overflow-y-auto" {...swipeHandlers}>
         {sessions.length === 0 ? (
           <p className="text-gray-500 text-center mt-10">
-            You haven't created any sessions yet.
+            {error === "No sessions found for this admin" ? "You haven't created any sessions yet." : error}
           </p>
+          
         ) : (
           sessions.map(session => (
             <Link
