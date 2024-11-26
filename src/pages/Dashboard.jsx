@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useSwipeable } from 'react-swipeable';
-import StatsTab from '../StatsTab';
-import SessionsTab from '../SessionsTab';
-import GoalsTab from '../GoalsTab';
-import MembersTab from '../MembersTab';
+import StatsTab from '../components/StatsTab'
+import SessionsTab from '../components/SessionsTab';
+import GoalsTab from '../components/GoalsTab';
+import MembersTab from '../components/MembersTab';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('Stats');

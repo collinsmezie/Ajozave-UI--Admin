@@ -1,10 +1,10 @@
 // src/components/HomePage.js
 import React from 'react';
-import Header from '../Header';
-import AccountSection from '../AccountSection';
-import QuickLinks from '../QuickLinks';
-import SpecialOffers from '../SpecialOffers';
-import BottomNavigation from '../BottomNavigation';
+import Header from '../components/Header';
+import AccountSection from '../components/AccountSection';
+import QuickLinks from '../components/QuickLinks';
+import SpecialOffers from '../components/SpecialOffers';
+import BottomNavigation from '../components/BottomNavigation';
 
 function HomePage() {
   return (

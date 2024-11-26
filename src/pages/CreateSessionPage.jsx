@@ -9,6 +9,8 @@ const CreateSessionPage = () => {
   const [members, setMembers] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [sessionId, setSessionId] = useState('');
+
   const [showModal, setShowModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [createSessionLoading, setCreateSessionLoading] = useState(false);
@@ -50,6 +52,9 @@ const CreateSessionPage = () => {
         setStartDate('');
         setEndDate('');
         setShowSuccessModal(true);
+        const sessionData = await response.json()
+        setSessionId(sessionData.session._id)
+
       } else {
         const errorData = await response.json();
         console.error('Failed to create session:', {
@@ -73,7 +78,8 @@ const CreateSessionPage = () => {
 
   const handleAddMembers = () => {
     setShowSuccessModal(false);
-    navigate('/dashboard');
+    navigate(`/sessions/${sessionId}/members`);
+
 
   };
 
@@ -199,8 +205,8 @@ const CreateSessionPage = () => {
         <>
           {/* Add 'overflow-hidden' to the body while modal is open */}
           <style>{`body { overflow: hidden; }`}</style>
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-2xl shadow-lg text-center w-full max-w-md mx-4 sm:max-w-lg sm:p-8">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-6 rounded-2xl shadow-lg text-center w-full max-w-md mx-4 sm:max-w-lg sm:p-8 transform -translate-y-1/2">
               <h3 className="text-xl font-bold text-purple-600">Session Created Successfully!</h3>
               <p className="text-gray-600 mt-3 text-sm sm:text-base leading-relaxed">
                 Your new session has been created. You can now add members to the session.

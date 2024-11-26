@@ -152,7 +152,7 @@ const MemberSelectionPage = () => {
             ))}
           </div>
 
-          <button
+          {/* <button
             onClick={handleConfirmSelection}
             disabled={submitLoading || selectedMembers.length === 0}
             className={`mt-4 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-purple-600 
@@ -167,7 +167,27 @@ const MemberSelectionPage = () => {
                 <span>Confirm Selection</span>
               </div>
             )}
+          </button> */}
+          <button
+            onClick={handleConfirmSelection}
+            disabled={submitLoading || selectedMembers.length === 0}
+            className={`mt-4 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-purple-600 
+            ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
+            transition duration-200 flex items-center justify-center`}
+            style={{ minHeight: '48px' }} // Set a fixed min height to prevent size changes
+          >
+            {submitLoading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <ClipLoader color="#fff" size={20} />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center space-x-2">
+                <FiUserPlus size={20} />
+                <span>Confirm Selection</span>
+              </div>
+            )}
           </button>
+
         </div>
       )}
 
@@ -188,7 +208,7 @@ const MemberSelectionPage = () => {
           </div>
         </>
       )}
-      
+
       {errorModal && (
         <>
           <style>{`body { overflow: hidden; }`}</style>

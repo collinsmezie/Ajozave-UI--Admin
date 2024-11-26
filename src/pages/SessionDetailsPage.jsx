@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FiEdit3, FiUserPlus, FiTrash2, FiPhone } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSessionDetails, deleteMember, setModalVisibility } from '../../features/session/sessionSlice';
+import { fetchSessionDetails, deleteMember, setModalVisibility } from '../features/session/sessionSlice';
 
 const SessionDetailsPage = () => {
   const { sessionId } = useParams();
