@@ -4,6 +4,7 @@ import HomePage from './pages/Home';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import CreateSessionPage from './pages/CreateSessionPage';
+import EditSessionPage from './pages/EditSessionPage';
 import SessionsPage from './pages/SessionsPage';
 import SessionDetailsPage from './pages/SessionDetailsPage';
 import MemberSelectionPage from './pages/MemberSelectionPage';
@@ -25,6 +26,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/" element={<Navigate replace to="/authentication" />} />
           <Route path="/create-session" element={<CreateSessionPage />} />
+          <Route path="/edit-session/:sessionId" element={<EditSessionPage />} />
           <Route path="/sessions/:sessionId" element={<SessionDetailsPage />} />
           <Route path="/sessions" element={<SessionsPage />} />
           <Route path="/sessions/:sessionId/members" element={<MemberSelectionPage />} />
