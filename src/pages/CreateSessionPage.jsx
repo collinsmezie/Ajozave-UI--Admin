@@ -21,10 +21,12 @@ const CreateSessionPage = () => {
     e.preventDefault();
     setCreateSessionLoading(true);
 
-    const token = localStorage.getItem('jwtToken'); // Assuming the JWT token is stored in localStorage
+    const token = localStorage.getItem('jwtToken');
 
     try {
       const response = await fetch('https://ajozave-api.onrender.com/api/sessions/new', {
+        // const response = await fetch('http://localhost:4000/api/sessions/new', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +35,7 @@ const CreateSessionPage = () => {
         body: JSON.stringify({
           sessionName,
           contributionAmount: Number(contributionAmount),
-          duration: Number(duration),
+          duration,
           numberOfMembers: Number(members),
           startDate,
           endDate,
@@ -113,7 +115,7 @@ const CreateSessionPage = () => {
             </div>
 
             {/* Duration */}
-            <div>
+            {/* <div>
               <label className="text-sm text-gray-600">Duration (Weeks)</label>
               <input
                 type="number"
@@ -122,6 +124,40 @@ const CreateSessionPage = () => {
                 onChange={(e) => setDuration(e.target.value)}
                 className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
               />
+            </div> */}
+
+            <div>
+              <label className="text-sm text-gray-600">Duration</label>
+              <div className="relative mt-2">
+                <select
+                  value={duration}
+                  onChange={(e) => setDuration(e.target.value)}
+                  className="w-full p-3 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600 appearance-none"
+                >
+                  <option value="" disabled>
+                    Select duration
+                  </option>
+                  <option value="Daily">Daily</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                </select>
+                <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
             </div>
 
             {/* Number of Members */}

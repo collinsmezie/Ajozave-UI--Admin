@@ -106,8 +106,10 @@ const Auth = () => {
       }
 
       const data = await response.json();
+      console.log("Auth DATA", data)
       if (data.token) {
         localStorage.setItem('jwtToken', data.token);
+        localStorage.setItem('username', data.user);
         navigate('/dashboard');
       } else {
         throw new Error('JWT token not found.');

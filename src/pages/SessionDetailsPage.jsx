@@ -24,6 +24,7 @@ const SessionDetailsPage = () => {
     const remainingMembers = calculateRemainingMembers();
     if (remainingMembers === 0) {
       console.log('Session started');
+      navigate(`/coming-soon`);
     } else {
       navigate(`/sessions/${sessionId}/members`);
     }
@@ -39,6 +40,10 @@ const SessionDetailsPage = () => {
     const newNumber = Math.floor(1000000000 + Math.random() * 9000000000);
     return newNumber;
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     dispatch(fetchSessionDetails(sessionId));
@@ -132,7 +137,7 @@ const SessionDetailsPage = () => {
 
               <div className="flex flex-col items-start">
                 <p className="text-xs uppercase text-gray-500 tracking-wider">Duration</p>
-                <p className="text-md font-bold text-gray-800">{session.duration} weeks</p>
+                <p className="text-md font-bold text-gray-800">{session.duration}</p>
               </div>
 
               <div className="flex flex-col items-start">

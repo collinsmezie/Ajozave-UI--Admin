@@ -330,13 +330,10 @@ import Modal from '../components/modal';
 const SessionsPage = () => {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null); // Modal content to handle different scenarios
   const [longPressedSessionId, setLongPressedSessionId] = useState(null);
   const [longPressTimer, setLongPressTimer] = useState(null);
-  // const [isScrolling, setIsScrolling] = useState(false);
-
 
   const navigate = useNavigate();
 
@@ -347,8 +344,17 @@ const SessionsPage = () => {
   useEffect(() => {
     const fetchSessions = async () => {
       try {
+        // Show loading spinner in modal
+        setModalContent({
+          title: "Retrying Please Wait...",
+          message: <ClipLoader color="#8b5cf6" size={30} />,
+          onConfirm: null, // Disable action during the loading phase
+          confirmText: null,
+        });
         const token = localStorage.getItem('jwtToken');
         const response = await fetch('https://ajozave-api.onrender.com/api/sessions', {
+        // const response = await fetch('http://localhost:4000/api/sessions', {
+
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -372,8 +378,18 @@ const SessionsPage = () => {
 
         const data = await response.json();
         setSessions(data.sessions);
+        setShowModal(false)
       } catch (err) {
-        setError(err.message);
+        if(err.message === "No sessions found for this admin"){
+          return
+        }
+        setModalContent({
+          title: "Error",
+          message: err.message || "An unexpected error occurred",
+          onConfirm: fetchSessions, // Retry fetching sessions
+          confirmText: "Retry",
+        });
+        setShowModal(true);
       } finally {
         setLoading(false);
       }
@@ -399,6 +415,8 @@ const SessionsPage = () => {
 
       const token = localStorage.getItem('jwtToken');
       const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}`, {
+        // const response = await fetch('http://localhost:4000/api/sessions/${sessionId}', {
+
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -432,7 +450,13 @@ const SessionsPage = () => {
         confirmText: "OK",
       });
     } catch (err) {
-      setError(err.message);
+      setModalContent({
+        title: "Error",
+        message: err.message || "An unexpected error occurred",
+        onConfirm:  fetchSessions, // Retry fetching sessions
+        confirmText: "Retry",
+      });
+      setShowModal(true);
     } finally {
       setLongPressedSessionId(null);
     }
@@ -542,21 +566,31 @@ const SessionsPage = () => {
         </Link>
       </header>
 
-      {/* Guide Text */}
-      <div className="px-4 mt-2">
-        <p className="text-sm text-gray-500 text-center">
-          <span className="font-medium text-purple-600">Tip:</span> Long press (or tap and hold) on a session card to edit or delete it.
-        </p>
-      </div>
+      {/* Conditional Guide Text */}
+      {sessions.length > 0 && (
+        <div className="px-4 mt-2">
+          <p className="text-sm text-gray-500 text-center">
+            <span className="font-medium text-purple-600">Tip:</span> Long press (or tap and hold) on a session card to edit or delete it.
+          </p>
+        </div>
+      )}
 
       <div className="flex-grow p-4 overflow-y-auto" {...swipeHandlers}>
         {sessions.length === 0 ? (
-          <p className="text-gray-500 text-center mt-10">
-            {error === 'No sessions found for this admin' ? "You haven't created any sessions yet." : error}
-          </p>
+          <div className="text-center mt-10">
+            <p className="text-gray-500 mb-6">
+              {/* {error === 'No sessions found for this admin' ? "You haven't created any sessions yet." : error} */}
+              You haven't created any sessions yet.
+            </p>
+            <button
+              onClick={() => navigate('/create-session')}
+              className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105"
+            >
+              Create a Session
+            </button>
+          </div>
         ) : (
           sessions.map((session) => (
-
             <div
               key={session._id}
               onContextMenu={(e) => e.preventDefault()} // Prevent context menu
@@ -568,7 +602,6 @@ const SessionsPage = () => {
               className={`relative bg-white rounded-xl p-4 mb-4 shadow-sm transform transition-all duration-200 ease-in-out ${longPressedSessionId === session._id ? 'scale-95' : 'hover:scale-105 focus:scale-105'
                 } select-none`}
             >
-
               {longPressedSessionId === session._id && (
                 <div className="absolute inset-0 flex items-center justify-center space-x-4 bg-opacity-50 bg-gray-700 rounded-xl">
                   {/* Edit Button */}
@@ -586,7 +619,7 @@ const SessionsPage = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent the card's `onTouchEnd` or `onMouseUp` from firing
-                      handleShowDeleteModal(session._id, session.status)
+                      handleShowDeleteModal(session._id, session.status);
                     }}
                     className="flex items-center justify-center bg-red-500 text-white rounded-full p-3 hover:bg-red-600 transition shadow-lg z-10"
                   >
@@ -610,9 +643,7 @@ const SessionsPage = () => {
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-semibold text-purple-700">{session.sessionName}</h2>
                   <span
-                    className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active'
-                      ? 'bg-green-100 text-green-700'
-                      : 'bg-red-100 text-red-700'
+                    className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
                       }`}
                   >
                     {session.status === 'active' ? 'Active' : 'Inactive'}
@@ -625,7 +656,7 @@ const SessionsPage = () => {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Duration</p>
-                    <p className="text-lg font-bold text-gray-500">{session.duration} weeks</p>
+                    <p className="text-lg font-bold text-gray-500">{session.duration}</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm text-gray-500">Start Date</p>
@@ -644,11 +675,11 @@ const SessionsPage = () => {
         <>
           <Modal
             isOpen={showModal}
-            title={modalContent?.title || ""}
-            message={modalContent?.message || ""}
+            title={modalContent?.title || ''}
+            message={modalContent?.message || ''}
             onCancel={() => {
-              setShowModal(false)
-              handleCancelLongPress()
+              setShowModal(false);
+              handleCancelLongPress();
             }}
             onConfirm={modalContent?.onConfirm || null}
             confirmText={modalContent?.confirmText}
@@ -661,4 +692,3 @@ const SessionsPage = () => {
 };
 
 export default SessionsPage;
-

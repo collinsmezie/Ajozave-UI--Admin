@@ -9,7 +9,7 @@ import SessionsPage from './pages/SessionsPage';
 import SessionDetailsPage from './pages/SessionDetailsPage';
 import MemberSelectionPage from './pages/MemberSelectionPage';
 import BottomNavigation from './components/BottomNavigation';
-import ComingSoon from './components/comingSoonPage';
+import ComingSoon from './pages/comingSoonPage';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
