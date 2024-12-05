@@ -353,7 +353,7 @@ const SessionsPage = () => {
         });
         const token = localStorage.getItem('jwtToken');
         const response = await fetch('https://ajozave-api.onrender.com/api/sessions', {
-        // const response = await fetch('http://localhost:4000/api/sessions', {
+          // const response = await fetch('http://localhost:4000/api/sessions', {
 
           headers: {
             Authorization: `Bearer ${token}`,
@@ -380,7 +380,7 @@ const SessionsPage = () => {
         setSessions(data.sessions);
         setShowModal(false)
       } catch (err) {
-        if(err.message === "No sessions found for this admin"){
+        if (err.message === "No sessions found for this admin") {
           return
         }
         setModalContent({
@@ -453,7 +453,7 @@ const SessionsPage = () => {
       setModalContent({
         title: "Error",
         message: err.message || "An unexpected error occurred",
-        onConfirm:  fetchSessions, // Retry fetching sessions
+        onConfirm: fetchSessions, // Retry fetching sessions
         confirmText: "Retry",
       });
       setShowModal(true);
@@ -640,15 +640,19 @@ const SessionsPage = () => {
               )}
 
               <div className={`relative ${longPressedSessionId === session._id ? 'opacity-50' : 'opacity-100'}`}>
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold text-purple-700">{session.sessionName}</h2>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex-grow">
+                    <h2 className="text-lg font-semibold text-purple-700 leading-tight">{session.sessionName}</h2>
+                  </div>
                   <span
-                    className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
                       }`}
+                    style={{ whiteSpace: 'nowrap' }} // Prevent wrapping for the status indicator
                   >
                     {session.status === 'active' ? 'Active' : 'Inactive'}
                   </span>
                 </div>
+
                 <div className="flex justify-between items-center mt-2">
                   <div>
                     <p className="text-sm text-gray-500">Contribution</p>

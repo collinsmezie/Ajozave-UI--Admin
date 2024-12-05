@@ -60,7 +60,7 @@ const StatsTab = () => {
       {/* Graph Section */}
       <div className="bg-white rounded-2xl p-4 shadow-sm">
         <div className="flex justify-between items-center">
-          <h3 className="font-semibold text-lg">Contribution Progress</h3>
+          <h3 className="font-semibold text-lg text-gray-500">Contribution Progress</h3>
           <p className="text-sm text-gray-500">Weekly</p>
         </div>
         <div className="mt-4 h-40">
@@ -72,19 +72,19 @@ const StatsTab = () => {
       <div className="grid grid-cols-2 gap-4">
         <div className="bg-purple-600 rounded-2xl p-4 text-white shadow-md">
           <p className="text-sm">Total Collected</p>
-          <p className="text-2xl font-bold mt-2">₦500,000</p>
+          <p className="text-2xl font-bold mt-2">₦0.00</p>
           <p className="text-sm mt-1">This Week</p>
         </div>
 
         <div className="bg-orange-500 rounded-2xl p-4 text-white shadow-md">
           <p className="text-sm">Active Sessions</p>
-          <p className="text-2xl font-bold mt-2">10</p>
+          <p className="text-2xl font-bold mt-2">0</p>
           <p className="text-sm mt-1">Running</p>
         </div>
 
         <div className="bg-blue-500 rounded-2xl p-4 text-white shadow-md col-span-2">
           <p className="text-sm">Average Weekly Contribution</p>
-          <p className="text-2xl font-bold mt-2">₦20,000</p>
+          <p className="text-2xl font-bold mt-2">₦0.00</p>
         </div>
       </div>
     </div>

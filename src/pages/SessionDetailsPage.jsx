@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FiEdit3, FiUserPlus, FiTrash2, FiPhone } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSessionDetails, deleteMember, setModalVisibility } from '../features/session/sessionSlice';
+import { fetchSessionDetails, deleteMember, setModalVisibility } from '../redux/session/sessionSlice';
 
 const SessionDetailsPage = () => {
   const { sessionId } = useParams();
@@ -100,29 +100,32 @@ const SessionDetailsPage = () => {
             <div className="flex items-center space-x-2">
               <div className="flex flex-col">
                 <p className="text-gray-700 text-sm">Your Total Contribution</p>
-                <p className="font-bold text-lg">₦250,000</p>
-                <p className="text-xs text-gray-500">Across 5 sessions</p>
+                <p className="font-bold text-lg">₦0.00</p>
+                <p className="text-xs text-gray-500">Across 1 session</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <div className="bg-purple-100 text-purple-600 text-xs font-semibold py-1 px-3 rounded-full flex flex-col items-center mb-4">
                 <span className="text-sm">Upcoming Pay</span>
-                <span className="text-xs font-normal">₦20,800</span>
+                <span className="text-xs font-normal">₦0.00</span>
               </div>
             </div>
           </div>
 
           <div className="bg-gradient-to-b from-white via-gray-50 to-gray-100 rounded-xl p-6 mb-6">
-            <div className="flex justify-between items-center mb-5">
-              <h2 className="text-xl font-semibold text-purple-600">{session.sessionName}</h2>
+            <div className="flex justify-between items-start mb-5">
+              <div className="flex-grow">
+                <h2 className="text-xl font-semibold text-purple-600 leading-tight">{session.sessionName}</h2>
+              </div>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-medium tracking-wide ${
-                  session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
-                }`}
+                className={`px-3 py-1 rounded-full text-xs font-medium tracking-wide ${session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                  }`}
+                style={{ whiteSpace: 'nowrap' }} // Prevent wrapping for the status indicator
               >
                 {session.status === 'active' ? 'Active' : 'Inactive'}
               </span>
             </div>
+
 
             <div className="grid grid-cols-2 gap-5">
               <div className="flex flex-col items-start">

@@ -127,14 +127,14 @@ import StatsTab from '../components/StatsTab';
 import SessionsTab from '../components/SessionsTab';
 import GoalsTab from '../components/GoalsTab';
 import MembersTab from '../components/MembersTab';
-import { BellAlertIcon } from '@heroicons/react/24/outline';
+import { BellIcon } from '@heroicons/react/24/outline';
 
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('Stats');
   const [previousTab, setPreviousTab] = useState('Stats');
-  const totalContributions = 400000;
-  const remainingPayments = 100000;
+  const totalContributions = 5;
+  const remainingPayments = 5;
   const percentagePaymentsMade = ((totalContributions - remainingPayments) / totalContributions) * 100;
 
   const tabOrder = ['Stats', 'Sessions', 'Goals', 'Members'];
@@ -204,7 +204,7 @@ const Dashboard = () => {
           {/* <button className="p-2 bg-white rounded-full shadow hover:bg-gray-100 transition duration-300"> */}
           <button className="p-2 bg-white transition duration-300">
 
-            <BellAlertIcon className="text-purple-600 w-6 h-6" />
+            <BellIcon className="text-purple-600 w-6 h-6" />
           </button>
           {/* <button className="p-2 bg-white rounded-full shadow hover:bg-gray-100 transition duration-300"> */}
           <button className="p-2 bg-white transition duration-300">
@@ -223,6 +223,7 @@ const Dashboard = () => {
               <CircularProgressbar
                 value={percentagePaymentsMade}
                 text={`${percentagePaymentsMade.toFixed(0)}%`}
+                // text={"0%"}
                 strokeWidth={8}
                 styles={{
                   path: { stroke: '#fff', strokeWidth: 8 },
@@ -233,9 +234,13 @@ const Dashboard = () => {
             </div>
             <div className="text-white">
               <p className="text-sm">TOTAL CONTRIBUTIONS</p>
-              <p className="font-bold text-lg mb-3">₦{totalContributions.toLocaleString()}</p>
+              {/* <p className="font-bold text-lg mb-3">₦{totalContributions.toLocaleString()}</p> */}
+              <p className="font-bold text-lg mb-3">₦0.00</p>
+
               <p className="text-sm">REMAINING PAYMENTS</p>
-              <p className="font-bold text-lg">₦{remainingPayments.toLocaleString()}</p>
+              {/* <p className="font-bold text-lg">₦{remainingPayments.toLocaleString()}</p> */}
+              <p className="font-bold text-lg">₦0.00</p>
+
             </div>
           </div>
         </div>
