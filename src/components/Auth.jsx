@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle, faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/ajozave.jpeg'
 
 const Auth = () => {
   const [selectedOption, setSelectedOption] = useState('new');
@@ -91,7 +92,7 @@ const Auth = () => {
     setLoginLoading(true); // Set loading to true when starting
     try {
       const response = await fetch('https://ajozave-api.onrender.com/admin/login', {
-      // const response = await fetch('http://localhost:4000/admin/login', {
+        // const response = await fetch('http://localhost:4000/admin/login', {
 
         method: 'POST',
         headers: {
@@ -106,7 +107,6 @@ const Auth = () => {
       }
 
       const data = await response.json();
-      console.log("Auth DATA", data)
       if (data.token) {
         localStorage.setItem('jwtToken', data.token);
         localStorage.setItem('username', data.user);
@@ -124,21 +124,23 @@ const Auth = () => {
   return (
     <div className="w-full max-w-sm p-6 bg-white">
 
-      <div className="text-2xl font-bold text-center text-gray-600 mb-7 font-bold text-red-600">Ajo<span className="text-gray-400">Zave</span></div>
-      {/* <h1 className="text-2xl font-bold text-center text-gray-600 mb-2">Hello There</h1> */}
+      {/* <div className="text-2xl font-bold text-center text-gray-600 mb-7 font-bold text-gray-600">Ajo<span className="text-gray-400">Zave</span></div> */}
+      <div className="flex items-center justify-center mb-5">
+        <img src={logo} alt="AjoZave Logo" class="w-[80px] h-[60px]" />
+      </div>
 
-      <h2 className="text-lg font-semibold text-center mb-8">Let's get you started</h2>
+      <h2 className="text-lg font-semibold text-center text-gray-500 mb-8">Let's get you started</h2>
 
       <div className="flex mb-12 border rounded-full">
         <div
           onClick={() => setIsExistingCustomer(false)}
-          className={`flex-1 py-2 text-center cursor-pointer rounded-full ${!isExistingCustomer ? 'bg-red-500 text-white text-sm' : 'text-gray-600 text-sm'}`}
+          className={`flex-1 py-2 text-center cursor-pointer rounded-full ${!isExistingCustomer ? 'bg-customViolet text-white text-sm' : 'text-gray-600 text-sm'}`}
         >
           New Customer
         </div>
         <div
           onClick={() => setIsExistingCustomer(true)}
-          className={`flex-1 py-2 text-center cursor-pointer rounded-full ${isExistingCustomer ? 'bg-red-500 text-white text-sm' : 'text-gray-600 text-sm'}`}
+          className={`flex-1 py-2 text-center cursor-pointer rounded-full ${isExistingCustomer ? 'bg-customViolet text-white text-sm' : 'text-gray-600 text-sm'}`}
         >
           Existing Customer
         </div>
@@ -194,7 +196,7 @@ const Auth = () => {
 
       {!isExistingCustomer ? (
         <button
-          className="w-full py-3 border border-gray-300 text-black rounded-lg mb-4 bg-red-500 text-white hover:bg-red-600 transition duration-300 flex items-center justify-center"
+          className="w-full py-3 border border-gray-300 text-black rounded-lg mb-4 bg-customViolet text-white hover:bg-customViolet transition duration-300 flex items-center justify-center"
           onClick={register}
           disabled={RegisterLoading} // Disable button when loading
         >
@@ -206,7 +208,7 @@ const Auth = () => {
         </button>
       ) : (
         <button
-          className="w-full py-3 border border-gray-300 text-black rounded-lg mb-4 bg-red-500 text-white hover:bg-red-600 transition duration-300 flex items-center justify-center"
+          className="w-full py-3 border border-gray-300 text-black rounded-lg mb-4 bg-customViolet text-white hover:bg-customViolet transition duration-300 flex items-center justify-center"
           onClick={login}
           disabled={loginLoading} // Disable button when loading
         >

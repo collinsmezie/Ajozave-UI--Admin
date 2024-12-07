@@ -325,7 +325,7 @@ import { useSwipeable } from 'react-swipeable';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiPlusCircle, FiTrash2, FiX, FiEdit3 } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
-import Modal from '../components/modal';
+import Modal from '../components/Modal';
 
 const SessionsPage = () => {
   const [sessions, setSessions] = useState([]);

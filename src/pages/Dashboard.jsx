@@ -178,9 +178,6 @@ const Dashboard = () => {
     return fullName ? fullName.split(' ')[0] : 'User';
   };
 
-
-  console.log(fetchUserName())
-
   return (
     <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
       {/* Modern Header */}

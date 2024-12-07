@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        customViolet: '#755FFF', // Example custom color
+      },
       fontFamily: {
         sans: ['Nunito', 'sans-serif'],
       },

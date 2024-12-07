@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Modal from "../components/modal"; // Import the reusable modal
+import Modal from "../components/Modal"; // Import the reusable modal
 
 const EditSessionPage = () => {
   const [sessionName, setSessionName] = useState("");

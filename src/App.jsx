@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import HomePage from './pages/Home';
-import AuthPage from './pages/AuthPage';
+import AuthPage from './pages/Authentication';
 import Dashboard from './pages/Dashboard';
-import CreateSessionPage from './pages/CreateSessionPage';
-import EditSessionPage from './pages/EditSessionPage';
-import SessionsPage from './pages/SessionsPage';
-import SessionDetailsPage from './pages/SessionDetailsPage';
-import MemberSelectionPage from './pages/MemberSelectionPage';
+import CreateSessionPage from './pages/CreateSession';
+import EditSessionPage from './pages/EditSession';
+import SessionsPage from './pages/Sessions';
+import SessionDetailsPage from './pages/SessionDetails';
+import MemberSelectionPage from './pages/MemberSelection';
 import BottomNavigation from './components/BottomNavigation';
-import ComingSoon from './pages/comingSoonPage';
+import ComingSoon from './pages/comingSoon';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 

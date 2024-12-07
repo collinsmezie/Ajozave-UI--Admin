@@ -248,7 +248,7 @@ import React, { useEffect, useState } from 'react';
 import { FiCheckCircle, FiCircle, FiCheck, FiUserPlus, FiPhone } from 'react-icons/fi';
 import { ClipLoader } from 'react-spinners';
 import { useNavigate, useParams } from 'react-router-dom';
-import Modal from '../components/modal';
+import Modal from '../components/Modal';
 
 const MemberSelectionPage = () => {
   const { sessionId } = useParams();
