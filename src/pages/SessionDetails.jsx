@@ -383,10 +383,10 @@ const SessionDetailsPage = () => {
           displayedMembers.map((obj) => (
             <div key={obj.member._id} className="flex justify-between items-center bg-gray-50 rounded-xl p-4 mb-2 shadow-sm">
               <div>
-                <p className="text-md font-bold text-gray-600">{obj.member.username}</p>
-                <div className="flex items-center space-x-1 text-xs text-gray-500">
+                <p className="text-sm font-bold text-gray-700">{obj.member.username}</p>
+                <div className="flex items-center space-x-1 text-xs text-gray-400">
                   <FiPhone className="text-green-500" />
-                  <span>+234 {generateNumber()}</span>
+                  <span>+234-{generateNumber()}</span>
                 </div>
               </div>
               <button
@@ -412,12 +412,12 @@ const SessionDetailsPage = () => {
             {showAllMembers ? (
               <>
                 <FiChevronUp className="mr-2" />
-                View Less
+                Show Less
               </>
             ) : (
               <>
                 <FiChevronDown className="mr-2" />
-                View All
+                Show All
               </>
             )}
           </button>

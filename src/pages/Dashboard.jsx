@@ -182,7 +182,7 @@ const Dashboard = () => {
     <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
       {/* Modern Header */}
       {/* <header className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-500 shadow-md"> */}
-      <header className="flex items-center justify-between px-4 py-3 bg-white">
+      <header className="sticky top-0 w-full flex items-center justify-between px-4 py-3 bg-white z-50">
 
         <div className="flex items-center space-x-3">
           <img

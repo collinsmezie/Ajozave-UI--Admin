@@ -126,7 +126,7 @@ const Auth = () => {
 
       {/* <div className="text-2xl font-bold text-center text-gray-600 mb-7 font-bold text-gray-600">Ajo<span className="text-gray-400">Zave</span></div> */}
       <div className="flex items-center justify-center mb-5">
-        <img src={logo} alt="AjoZave Logo" class="w-[80px] h-[60px]" />
+        <img src={logo} alt="AjoZave" class="w-[80px] h-[60px]" />
       </div>
 
       <h2 className="text-lg font-semibold text-center text-gray-500 mb-8">Let's get you started</h2>
