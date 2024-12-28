@@ -71,11 +71,11 @@ const BottomNavigation = () => {
     { name: 'Sessions', icon: <EyeIcon className="h-6 w-6" />, path: '/sessions' },
     { name: 'Cards', icon: <CreditCardIcon className="h-6 w-6" />, path: '/coming-soon' },
     { name: 'Wallet', icon: <WalletIcon className="h-6 w-6" />, path: '/coming-soon' },
-    { name: 'Menu', icon: <UserCircleIcon className="h-6 w-6" />, path: '/coming-soon' },
+    { name: 'Menu', icon: <UserCircleIcon className="h-6 w-6" />, path: '/contributors-dashboard' },
   ];
 
   return (
-    <div className="sticky bottom-0 bg-white shadow-md flex justify-around items-center py-2 w-full z-10 rounded-t-2xl">
+    <div className="sticky bottom-0 bg-white shadow-md flex justify-around items-center py-2 w-full z-10 rounded-t-2xl border border-t-gray-200">
       {navItems.map((item, index) => (
         <div
           key={index}

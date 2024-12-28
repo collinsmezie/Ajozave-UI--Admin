@@ -3,6 +3,7 @@ import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import HomePage from './pages/Home';
 import AuthPage from './pages/Authentication';
 import Dashboard from './pages/Dashboard';
+import ContributorsDashboard from './pages/ContributorsDashboard';
 import CreateSessionPage from './pages/CreateSession';
 import EditSessionPage from './pages/EditSession';
 import SessionsPage from './pages/Sessions';
@@ -10,7 +11,6 @@ import SessionDetailsPage from './pages/SessionDetails';
 import MemberSelectionPage from './pages/MemberSelection';
 import BottomNavigation from './components/BottomNavigation';
 import ComingSoon from './pages/comingSoon';
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
           <Route path="/authentication" element={<AuthPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/contributors-dashboard" element={<ContributorsDashboard />} />
           <Route path="/" element={<Navigate replace to="/authentication" />} />
           <Route path="/create-session" element={<CreateSessionPage />} />
           <Route path="/edit-session/:sessionId" element={<EditSessionPage />} />
