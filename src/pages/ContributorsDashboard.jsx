@@ -96,30 +96,34 @@
 
 
 
-
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import banner1 from "../assets/banner1.webp";
-import banner2 from "../assets/banner2.webp"; 
-import banner3 from "../assets/banner3.webp";
 import banner4 from "../assets/banner4.webp";
 import banner5 from "../assets/banner5.webp";
 import banner6 from "../assets/banner6.webp";
-import banner7 from "../assets/banner7.webp";
-import banner8 from "../assets/banner8.webp";
-import banner9 from "../assets/banner9.webp";
-import banner10 from "../assets/banner10.jpg";
-// import banner11 from "../assets/banner11.html";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   PaperAirplaneIcon,
   CurrencyDollarIcon,
-  // BatteryChargingIcon,
   BoltIcon,
   CreditCardIcon,
 } from "@heroicons/react/24/outline"; // Importing Heroicons
 
+
 const ContributorsDashboard = () => {
+  // const [activeDashboard, setActiveDashboard] = useState("Contributor");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Determine active dashboard based on current path
+  const activeDashboard =
+    location.pathname === "/contributors-dashboard"
+      ? "Contributor"
+      : "Collector";
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -130,6 +134,55 @@ const ContributorsDashboard = () => {
       <header className="bg-gradient-to-r from-purple-500 to-purple-700 text-white p-6 rounded-b-3xl shadow-md">
         <div className="flex justify-between items-center">
           <button className="text-white text-2xl font-semibold">&#x2190;</button>
+
+          {/* Toggle Tab */}
+          {/* <div className="flex items-center justify-center flex-1">
+            <div className="flex items-center bg-gray-200 rounded-full p-0.5">
+              <button
+                className={`px-3 py-0.5 text-sm rounded-full ${
+                  activeDashboard === "Contributor"
+                    ? "bg-purple-600 text-white"
+                    : "text-gray-700"
+                }`}
+                onClick={() => navigate("/contributors-dashboard")}              >
+                Contributor
+              </button>
+              <button
+                className={`px-3 py-0.5 text-sm rounded-full ${
+                  activeDashboard === "Collector"
+                    ? "bg-purple-600 text-white"
+                    : "text-gray-700"
+                }`}
+                onClick={() => navigate("/dashboard")}              >
+                Collector
+              </button>
+            </div>
+          </div> */}
+
+          {/* Toggle Tab */}
+          <div className="flex items-center justify-center flex-1">
+            <div className="flex items-center bg-gray-200 rounded-full p-0.5 shadow-sm">
+              <button
+                className={`px-4 py-1 text-sm rounded-full font-medium transition-all ${activeDashboard === "Contributor"
+                  ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-md"
+                  : "text-gray-700 hover:text-purple-600"
+                  }`}
+                onClick={() => navigate("/contributors-dashboard")}
+              >
+                Contributor
+              </button>
+              <button
+                className={`px-4 py-1 text-sm rounded-full font-medium transition-all ${activeDashboard === "Collector"
+                  ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-md"
+                  : "text-gray-700 hover:text-purple-600"
+                  }`}
+                onClick={() => navigate("/dashboard")}
+              >
+                Collector
+              </button>
+            </div>
+          </div>
+
           <div className="w-10 h-10 rounded-full bg-gray-200 border border-gray-300 overflow-hidden">
             <img
               src={`https://api.dicebear.com/5.x/avataaars/svg?seed=User123`}
@@ -160,14 +213,8 @@ const ContributorsDashboard = () => {
       <section className="mt-8 px-4">
         <h2 className="text-sm font-semibold text-gray-600 mb-3">Offers</h2>
         <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <OfferCard
-            image={banner1}
-            alt="Summer Sale"
-          />
-          <OfferCard
-            image={banner4}
-            alt="Summer Offers"
-          />
+          <OfferCard image={banner1} alt="Summer Sale" />
+          <OfferCard image={banner4} alt="Summer Offers" />
         </div>
       </section>
 
@@ -175,14 +222,8 @@ const ContributorsDashboard = () => {
       <section className="mt-8 px-4">
         <h2 className="text-sm font-semibold text-gray-600 mb-3">Shopping</h2>
         <div className="flex space-x-4 overflow-x-auto scrollbar-hide">
-          <OfferCard
-            image={banner5}
-            alt="Summer Sale"
-          />
-          <OfferCard
-            image={banner6}
-            alt="Black Friday"
-          />
+          <OfferCard image={banner5} alt="Summer Sale" />
+          <OfferCard image={banner6} alt="Black Friday" />
         </div>
       </section>
     </div>
