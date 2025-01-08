@@ -398,8 +398,8 @@ const Dashboard = () => {
     <div className="flex flex-col min-h-screen bg-purple-50">
 
       {/* Progress Section */}
-      <div className="bg-purple-600 rounded-b-3xl p-6 text-white shadow-lg">
-        <div className="flex items-center justify-between">
+      <div className="bg-gradient-to-r from-purple-500 to-purple-700 rounded-b-3xl p-6 text-white shadow-lg">
+        <div className="flex items-center justify-between mb-6">
           {/* Back Arrow */}
           <button
             className="text-white text-2xl font-semibold flex-shrink-0 hover:opacity-80 transition-opacity"
@@ -410,7 +410,7 @@ const Dashboard = () => {
 
           {/* Toggle Tab */}
           <div className="flex items-center justify-center flex-1">
-            <div className="flex items-center bg-gray-200 rounded-full p-0.5 shadow-sm">
+            <div className="flex items-center bg-gray-200 rounded-full p-0.4 shadow-sm">
               <button
                 className={`px-4 py-1 text-sm rounded-full font-medium transition-all ${activeDashboard === "Contributor"
                   ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-md"
@@ -442,7 +442,7 @@ const Dashboard = () => {
           </div> */}
 
           {/* Profile Avatar */}
-          <div className="w-10 h-10 rounded-full bg-gray-200 border border-gray-300 overflow-hidden">
+          <div className="w-8 h-8 rounded-full bg-gray-200 border border-gray-300 overflow-hidden">
             <img
               src={`https://api.dicebear.com/5.x/avataaars/svg?seed=User123`}
               alt="User Avatar"
@@ -451,19 +451,19 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="mt-6 flex items-center justify-between">
+        <div className="mt-5 flex items-center justify-around">
           {/* Progress Circle */}
-          <div className="relative w-32 h-32">
+          <div className="relative w-24 h-24">
             <CircularProgressbar
               value={percentagePaymentsMade}
               text={`${percentagePaymentsMade.toFixed(0)}%`}
-              strokeWidth={12}
+              strokeWidth={10}
               styles={{
                 path: { stroke: "url(#gradient)", strokeLinecap: "round" },
                 trail: { stroke: "rgba(255,255,255,0.3)" },
                 text: {
                   fill: "#fff",
-                  fontSize: "24px",
+                  fontSize: "29px",
                   fontWeight: "bold",
                   fontFamily: "sans-serif",
                 },
@@ -473,20 +473,21 @@ const Dashboard = () => {
             <svg>
               <defs>
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#8e44ad" />
-                  <stop offset="100%" stopColor="#3498db" />
+                  <stop offset="0%" stopColor="#fff" />
+                  <stop offset="100%" stopColor="#fff" />
                 </linearGradient>
               </defs>
             </svg>
           </div>
 
           <div className="text-right">
-            <p className="text-xs font-light tracking-wide text-gray-200">TOTAL CONTRIBUTIONS</p>
-            <h3 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">₦0.00</h3>
-            <p className="text-xs font-light tracking-wide text-gray-200 mt-4">REMAINING PAYMENTS</p>
-            <h3 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">₦0.00</h3>
+            <p className="text-[10px] font-light tracking-wide text-gray-200">TOTAL CONTRIBUTIONS</p>
+            <h3 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">₦0.00</h3>
+            <p className="text-[10px] font-light tracking-wide text-gray-200 mt-2">REMAINING PAYMENTS</p>
+            <h3 className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">₦0.00</h3>
           </div>
         </div>
+
       </div>
 
       {/* Tab Navigation */}
