@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import AccountSection from '../components/AccountSection';
 import QuickLinks from '../components/QuickLinks';
 import SpecialOffers from '../components/SpecialOffers';
-import BottomNavigation from '../components/BottomNavigation';
+import BottomNavigation from '../components/CollectorNav';
 
 function HomePage() {
   return (

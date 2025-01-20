@@ -166,7 +166,7 @@ const ContributorsDashboard = () => {
 
   // Determine active dashboard based on current path
   const activeDashboard =
-    location.pathname === "/contributors-dashboard"
+    location.pathname === "/contributor-dashboard"
       ? "Contributor"
       : "Collector";
 
@@ -222,7 +222,7 @@ const ContributorsDashboard = () => {
                   ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-md"
                   : "text-gray-700 hover:text-purple-600"
                   }`}
-                onClick={() => navigate("/contributors-dashboard")}
+                onClick={() => navigate("/contributor-dashboard")}
               >
                 Contributor
               </button>
@@ -231,7 +231,7 @@ const ContributorsDashboard = () => {
                   ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-md"
                   : "text-gray-700 hover:text-purple-600"
                   }`}
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/collector-dashboard")}
               >
                 Collector
               </button>

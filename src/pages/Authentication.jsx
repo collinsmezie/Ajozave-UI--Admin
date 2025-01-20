@@ -1,7 +1,7 @@
 // src/components/AuthPage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Auth from '../components/Auth';
+import Auth from './Auth';
 
 function AuthPage() {
   const navigate = useNavigate();

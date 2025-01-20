@@ -501,7 +501,7 @@ const SessionsPage = () => {
 
       // If no long press was detected, trigger the click action
       if (longPressedSessionId === null) {
-        navigate(`/sessions/${sessionId}`);
+        navigate(`/collector-sessions/${sessionId}`);
       }
     }
   };

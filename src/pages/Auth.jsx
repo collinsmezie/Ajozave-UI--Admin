@@ -110,7 +110,7 @@ const Auth = () => {
       if (data.token) {
         localStorage.setItem('jwtToken', data.token);
         localStorage.setItem('username', data.user);
-        navigate('/dashboard');
+        navigate('/contributor-dashboard');
       } else {
         throw new Error('JWT token not found.');
       }
