@@ -27,7 +27,7 @@ const CollectorDashboard = () => {
       : 0;
 
   return (
-    <div className="flex flex-col min-h-screen bg-purple-50">
+    <div className="flex flex-col min-h-screen bg-gray-100">
 
       {/* Progress Section */}
       {/* <div className="bg-gradient-to-r from-purple-500 to-purple-700 rounded-b-3xl p-6 text-white shadow-lg"> */}

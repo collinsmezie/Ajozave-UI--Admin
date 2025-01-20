@@ -147,8 +147,6 @@
 
 
 import React, { useEffect, useState } from "react";
-import banner5 from "../assets/banner5.webp";
-import banner6 from "../assets/banner6.webp";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   PaperAirplaneIcon,
