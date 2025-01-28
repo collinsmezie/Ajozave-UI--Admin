@@ -6,7 +6,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // customViolet: '#755FFF', // Example custom color
         customViolet: '#755FFF', // Example custom color
         customBlue: '#6A4CFF',
         // customLighterViolet: '#AFA8FF',

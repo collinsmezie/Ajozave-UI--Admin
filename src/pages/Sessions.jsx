@@ -3,11 +3,11 @@
 // import { Link, useNavigate } from 'react-router-dom';
 // import { FiPlusCircle, FiTrash2, FiX, FiEdit3 } from 'react-icons/fi';
 // import ClipLoader from 'react-spinners/ClipLoader';
+// import Modal from '../components/Modal';
 
 // const SessionsPage = () => {
 //   const [sessions, setSessions] = useState([]);
 //   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
 //   const [showModal, setShowModal] = useState(false);
 //   const [modalContent, setModalContent] = useState(null); // Modal content to handle different scenarios
 //   const [longPressedSessionId, setLongPressedSessionId] = useState(null);
@@ -22,8 +22,17 @@
 //   useEffect(() => {
 //     const fetchSessions = async () => {
 //       try {
+//         // Show loading spinner in modal
+//         setModalContent({
+//           title: "Retrying Please Wait...",
+//           message: <ClipLoader color="#8b5cf6" size={30} />,
+//           onConfirm: null, // Disable action during the loading phase
+//           confirmText: null,
+//         });
 //         const token = localStorage.getItem('jwtToken');
 //         const response = await fetch('https://ajozave-api.onrender.com/api/sessions', {
+//           // const response = await fetch('http://localhost:4000/api/sessions', {
+
 //           headers: {
 //             Authorization: `Bearer ${token}`,
 //           },
@@ -47,8 +56,18 @@
 
 //         const data = await response.json();
 //         setSessions(data.sessions);
+//         setShowModal(false)
 //       } catch (err) {
-//         setError(err.message);
+//         if (err.message === "No sessions found for this admin") {
+//           return
+//         }
+//         setModalContent({
+//           title: "Error",
+//           message: err.message || "An unexpected error occurred",
+//           onConfirm: fetchSessions, // Retry fetching sessions
+//           confirmText: "Retry",
+//         });
+//         setShowModal(true);
 //       } finally {
 //         setLoading(false);
 //       }
@@ -62,20 +81,25 @@
 //     navigate('/authentication');
 //   };
 
-
 //   const handleDeleteSession = async (sessionId) => {
 //     try {
-//       console.log("SESSION ID", sessionId)
+//       // Show loading spinner in modal
+//       setModalContent({
+//         title: "Deleting Session...",
+//         message: <ClipLoader color="#8b5cf6" size={30} />,
+//         onConfirm: null, // Disable action during the loading phase
+//         confirmText: null,
+//       });
+
 //       const token = localStorage.getItem('jwtToken');
 //       const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}`, {
-//         // const response = await fetch(`http://localhost:4000/api/sessions/${sessionId}`, {
+//         // const response = await fetch('http://localhost:4000/api/sessions/${sessionId}', {
+
 //         method: 'DELETE',
 //         headers: {
 //           Authorization: `Bearer ${token}`,
 //         },
 //       });
-
-//       console.log("RESPONSE", await response.json())
 
 //       if (response.status === 401) {
 //         setModalContent({
@@ -88,40 +112,78 @@
 //         return;
 //       }
 
-
 //       if (!response.ok) {
 //         const errorMessage = await response.json().catch(() => ({}));
 //         throw new Error(errorMessage.error || "An unexpected error occurred");
 //       }
 
+//       // Update sessions after successful deletion
 //       setSessions(sessions.filter((session) => session._id !== sessionId));
+
+//       // Show success message
+//       setModalContent({
+//         title: "Session Deleted",
+//         message: "The session has been successfully deleted.",
+//         onConfirm: () => setShowModal(false),
+//         confirmText: "OK",
+//       });
 //     } catch (err) {
-//       setError(err.message);
+//       setModalContent({
+//         title: "Error",
+//         message: err.message || "An unexpected error occurred",
+//         onConfirm: fetchSessions, // Retry fetching sessions
+//         confirmText: "Retry",
+//       });
+//       setShowModal(true);
 //     } finally {
 //       setLongPressedSessionId(null);
-//       setShowModal(false);
-//       console.log("reach here")
 //     }
 //   };
 
+//   let startX = 0;
+//   let startY = 0;
 
-//   const handleTouchStart = (sessionId) => {
+//   const handleTouchStart = (sessionId, event) => {
+//     // Capture the start position of the touch
+//     const touch = event.touches ? event.touches[0] : event;
+//     startX = touch.clientX;
+//     startY = touch.clientY;
+
+//     // Start the long-press timer
 //     const timer = setTimeout(() => {
 //       setLongPressedSessionId(sessionId);
-//     }, 500);
+//     }, 800); // Long-press threshold in milliseconds
 //     setLongPressTimer(timer);
 //   };
 
+//   const handleTouchMove = (event) => {
+//     // Capture the current position of the touch
+//     const touch = event.touches ? event.touches[0] : event;
+//     const deltaX = Math.abs(touch.clientX - startX);
+//     const deltaY = Math.abs(touch.clientY - startY);
+
+//     // If movement exceeds the threshold, it's considered a scroll
+//     if (deltaX > 10 || deltaY > 10) {
+//       if (longPressTimer) {
+//         clearTimeout(longPressTimer);
+//         setLongPressTimer(null);
+//       }
+//     }
+//   };
+
 //   const handleTouchEnd = (sessionId) => {
+//     // Clear the long-press timer
 //     if (longPressTimer) {
 //       clearTimeout(longPressTimer);
 //       setLongPressTimer(null);
 
+//       // If no long press was detected, trigger the click action
 //       if (longPressedSessionId === null) {
-//         navigate(`/sessions/${sessionId}`);
+//         navigate(`/collector-sessions/${sessionId}`);
 //       }
 //     }
 //   };
+
 
 //   const handleCancelLongPress = () => {
 //     setLongPressedSessionId(null); // Reset the selected session ID
@@ -137,8 +199,8 @@
 //       setModalContent({
 //         title: "Cannot Delete Active Session",
 //         message: "This session is currently active and cannot be deleted.",
-//         onConfirm: () => setShowModal(false), // Close modal without action
-//         confirmText: "",
+//         onConfirm: () => { setShowModal(false); handleCancelLongPress(); }, // Close modal without action
+//         confirmText: "OK",
 //       });
 //     } else if (sessionStatus === 'inactive') {
 //       setModalContent({
@@ -154,7 +216,6 @@
 
 //     setShowModal(true);
 //   };
-
 
 //   const swipeHandlers = useSwipeable({
 //     onSwipedLeft: () => { },
@@ -175,7 +236,7 @@
 //       <header className="flex items-center justify-between p-4 bg-white shadow-sm">
 //         <h1 className="text-2xl font-semibold text-purple-700">My Sessions</h1>
 //         <Link
-//           to="/create-session"
+//           to="/collector-create-session"
 //           className="bg-gradient-to-r from-purple-500 to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
 //           title="Create a Session"
 //         >
@@ -183,21 +244,41 @@
 //         </Link>
 //       </header>
 
+//       {/* Conditional Guide Text */}
+//       {sessions.length > 0 && (
+//         <div className="px-4 mt-2">
+//           <p className="text-sm text-gray-500 text-center">
+//             <span className="font-medium text-purple-600">Tip:</span> Long press (or tap and hold) on a session card to edit or delete it.
+//           </p>
+//         </div>
+//       )}
+
 //       <div className="flex-grow p-4 overflow-y-auto" {...swipeHandlers}>
 //         {sessions.length === 0 ? (
-//           <p className="text-gray-500 text-center mt-10">
-//             {error === 'No sessions found for this admin' ? "You haven't created any sessions yet." : error}
-//           </p>
+//           <div className="text-center mt-10">
+//             <p className="text-gray-500 mb-6">
+//               {/* {error === 'No sessions found for this admin' ? "You haven't created any sessions yet." : error} */}
+//               You haven't created any sessions yet.
+//             </p>
+//             <button
+//               onClick={() => navigate('/collector-create-session')}
+//               className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105"
+//             >
+//               Create a Session
+//             </button>
+//           </div>
 //         ) : (
 //           sessions.map((session) => (
 //             <div
 //               key={session._id}
-//               onMouseDown={() => handleTouchStart(session._id)}
+//               onContextMenu={(e) => e.preventDefault()} // Prevent context menu
+//               onMouseDown={(e) => handleTouchStart(session._id, e)}
 //               onMouseUp={() => handleTouchEnd(session._id)}
-//               onTouchStart={() => handleTouchStart(session._id)}
+//               onTouchStart={(e) => handleTouchStart(session._id, e)}
+//               onTouchMove={handleTouchMove}
 //               onTouchEnd={() => handleTouchEnd(session._id)}
 //               className={`relative bg-white rounded-xl p-4 mb-4 shadow-sm transform transition-all duration-200 ease-in-out ${longPressedSessionId === session._id ? 'scale-95' : 'hover:scale-105 focus:scale-105'
-//                 }`}
+//                 } select-none`}
 //             >
 //               {longPressedSessionId === session._id && (
 //                 <div className="absolute inset-0 flex items-center justify-center space-x-4 bg-opacity-50 bg-gray-700 rounded-xl">
@@ -216,7 +297,7 @@
 //                   <button
 //                     onClick={(e) => {
 //                       e.stopPropagation(); // Prevent the card's `onTouchEnd` or `onMouseUp` from firing
-//                       handleShowDeleteModal(session._id, session.status)
+//                       handleShowDeleteModal(session._id, session.status);
 //                     }}
 //                     className="flex items-center justify-center bg-red-500 text-white rounded-full p-3 hover:bg-red-600 transition shadow-lg z-10"
 //                   >
@@ -233,22 +314,23 @@
 //                   >
 //                     <FiX size={20} />
 //                   </button>
-
 //                 </div>
 //               )}
 
 //               <div className={`relative ${longPressedSessionId === session._id ? 'opacity-50' : 'opacity-100'}`}>
-//                 <div className="flex justify-between items-center mb-4">
-//                   <h2 className="text-lg font-semibold text-purple-700">{session.sessionName}</h2>
+//                 <div className="flex justify-between items-start mb-4">
+//                   <div className="flex-grow">
+//                     <h2 className="text-lg font-semibold text-purple-700 leading-tight">{session.sessionName}</h2>
+//                   </div>
 //                   <span
-//                     className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active'
-//                       ? 'bg-green-100 text-green-700'
-//                       : 'bg-red-100 text-red-700'
+//                     className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
 //                       }`}
+//                     style={{ whiteSpace: 'nowrap' }} // Prevent wrapping for the status indicator
 //                   >
 //                     {session.status === 'active' ? 'Active' : 'Inactive'}
 //                   </span>
 //                 </div>
+
 //                 <div className="flex justify-between items-center mt-2">
 //                   <div>
 //                     <p className="text-sm text-gray-500">Contribution</p>
@@ -256,7 +338,7 @@
 //                   </div>
 //                   <div>
 //                     <p className="text-sm text-gray-500">Duration</p>
-//                     <p className="text-lg font-bold text-gray-500">{session.duration} weeks</p>
+//                     <p className="text-lg font-bold text-gray-500">{session.duration}</p>
 //                   </div>
 //                   <div className="text-right">
 //                     <p className="text-sm text-gray-500">Start Date</p>
@@ -273,37 +355,41 @@
 
 //       {showModal && modalContent && (
 //         <>
-//           {/* <style>{`body { overflow: hidden; }`}</style> */}
-//           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-//             <div className="bg-white p-6 rounded-xl shadow-lg text-center w-full max-w-md mx-4 sm:max-w-lg sm:p-8 transform -translate-y-1/2">
-//               <h2 className="text-xl font-semibold text-gray-800">{modalContent.title}</h2>
-//               <p className="mt-2 text-gray-600">{modalContent.message}</p>
-//               <div className="flex justify-center mt-4 space-x-4">
-//                 <button
-//                   onClick={() => setShowModal(false)}
-//                   className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-//                 >
-//                   Cancel
-//                 </button>
-//                 {modalContent.onConfirm && (
-//                   <button
-//                     onClick={modalContent.onConfirm}
-//                     className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-//                   >
-//                     {modalContent.confirmText || "OK"}
-//                   </button>
-//                 )}
-//               </div>
-//             </div>
-//           </div>
+//           <Modal
+//             isOpen={showModal}
+//             title={modalContent?.title || ''}
+//             message={modalContent?.message || ''}
+//             onCancel={() => {
+//               setShowModal(false);
+//               handleCancelLongPress();
+//             }}
+//             onConfirm={modalContent?.onConfirm || null}
+//             confirmText={modalContent?.confirmText}
+//             disableCancel={modalContent?.disableCancel || false}
+//           />
 //         </>
 //       )}
-
 //     </div>
 //   );
 // };
 
 // export default SessionsPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -554,15 +640,15 @@ const SessionsPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-purple-50 animate-slide-in">
+    <div className="flex flex-col min-h-screen bg-gray-100 animate-slide-in">
       <header className="flex items-center justify-between p-4 bg-white shadow-sm">
-        <h1 className="text-2xl font-semibold text-purple-700">My Sessions</h1>
+        <h1 className="text-2xl font-semibold text-black">My Sessions</h1>
         <Link
-          to="/create-session"
-          className="bg-gradient-to-r from-purple-500 to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
+          to="/collector-create-session"
+          className="bg-customViolet text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
           title="Create a Session"
         >
-          <FiPlusCircle size={31} />
+          <FiPlusCircle size={33} />
         </Link>
       </header>
 
@@ -570,7 +656,7 @@ const SessionsPage = () => {
       {sessions.length > 0 && (
         <div className="px-4 mt-2">
           <p className="text-sm text-gray-500 text-center">
-            <span className="font-medium text-purple-600">Tip:</span> Long press (or tap and hold) on a session card to edit or delete it.
+            <span className="font-medium text-customViolet">Tip:</span> Long press (or tap and hold) on a session card to edit or delete it.
           </p>
         </div>
       )}
@@ -583,8 +669,8 @@ const SessionsPage = () => {
               You haven't created any sessions yet.
             </p>
             <button
-              onClick={() => navigate('/create-session')}
-              className="px-6 py-3 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105"
+              onClick={() => navigate('/collector-create-session')}
+              className="px-6 py-3 bg-customViolet text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 transition-transform transform hover:scale-105"
             >
               Create a Session
             </button>
@@ -642,7 +728,7 @@ const SessionsPage = () => {
               <div className={`relative ${longPressedSessionId === session._id ? 'opacity-50' : 'opacity-100'}`}>
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-grow">
-                    <h2 className="text-lg font-semibold text-purple-700 leading-tight">{session.sessionName}</h2>
+                    <h2 className="text-lg font-semibold text-black leading-tight">{session.sessionName}</h2>
                   </div>
                   <span
                     className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
