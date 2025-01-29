@@ -642,7 +642,7 @@ const SessionsPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 animate-slide-in">
       <header className="flex items-center justify-between p-4 bg-white shadow-sm">
-        <h1 className="text-2xl font-semibold text-black">My Sessions</h1>
+        <h1 className="text-2xl font-semibold text-customViolet">My Sessions</h1>
         <Link
           to="/collector-create-session"
           className="bg-customViolet text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
@@ -694,7 +694,7 @@ const SessionsPage = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent any unwanted parent action
-                      navigate(`/edit-session/${session._id}`);
+                      navigate(`/collector-edit-session/${session._id}`);
                     }}
                     className="flex items-center justify-center bg-blue-500 text-white rounded-full p-3 hover:bg-blue-600 transition shadow-lg z-10"
                   >
@@ -728,7 +728,7 @@ const SessionsPage = () => {
               <div className={`relative ${longPressedSessionId === session._id ? 'opacity-50' : 'opacity-100'}`}>
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-grow">
-                    <h2 className="text-lg font-semibold text-black leading-tight">{session.sessionName}</h2>
+                    <h2 className="text-lg font-semibold text-gray-700 leading-tight">{session.sessionName}</h2>
                   </div>
                   <span
                     className={`px-3 py-1 rounded-lg text-sm ${session.status === 'active' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
@@ -742,7 +742,7 @@ const SessionsPage = () => {
                 <div className="flex justify-between items-center mt-2">
                   <div>
                     <p className="text-sm text-gray-500">Contribution</p>
-                    <p className="text-lg font-bold text-gray-600">₦{session.contributionAmount.toLocaleString()}</p>
+                    <p className="text-lg font-bold text-gray-500">₦{session.contributionAmount.toLocaleString()}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Duration</p>
