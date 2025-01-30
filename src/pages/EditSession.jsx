@@ -9,6 +9,7 @@ const EditSessionPage = () => {
   const [members, setMembers] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [description, setDescription] = useState("");
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [editSessionLoading, setEditSessionLoading] = useState(false);
@@ -43,6 +44,7 @@ const EditSessionPage = () => {
           setMembers(sessionInfo.session.numberOfMembers);
           setStartDate(new Date(sessionInfo.session.startDate).toISOString().split("T")[0]);
           setEndDate(new Date(sessionInfo.session.endDate).toISOString().split("T")[0]);
+          setDescription(sessionInfo.session.description);
         } else {
           console.error("Failed to fetch session details");
         }
@@ -77,6 +79,7 @@ const EditSessionPage = () => {
             numberOfMembers: Number(members),
             startDate,
             endDate,
+            description: description?.trim() ? description : null,
           }),
         }
       );
@@ -90,6 +93,7 @@ const EditSessionPage = () => {
         setMembers("");
         setStartDate("");
         setEndDate("");
+        setDescription("");
         setShowSuccessModal(true); // Show success modal
       } else {
         console.error("Failed to update session");
@@ -103,7 +107,7 @@ const EditSessionPage = () => {
 
   const handleAddMembers = () => {
     setShowSuccessModal(false);
-    navigate(`/sessions/${sessionId}/members`);
+    navigate(`/collector-sessions/${sessionId}/members`);
   };
 
   const handleLoginRedirect = () => {
@@ -112,11 +116,11 @@ const EditSessionPage = () => {
   };
 
   return (
-    <div className="animate-slide-in flex flex-col min-h-screen bg-purple-50">
+    <div className="animate-slide-in flex flex-col min-h-screen bg-gray-100">
       <div className="flex-grow p-2 overflow-y-auto">
         {/* Header */}
         <header className="flex items-center justify-between p-4 bg-white mb-4">
-          <h1 className="text-2xl font-semibold text-purple-700">Edit Session Info</h1>
+          <h1 className="text-2xl font-semibold text-customViolet">Edit Session Info</h1>
         </header>
 
         {/* Form Section */}
@@ -130,7 +134,7 @@ const EditSessionPage = () => {
                 placeholder="Enter session name"
                 value={sessionName}
                 onChange={(e) => setSessionName(e.target.value)}
-                className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+                className="w-full p-3 mt-2 bg-gray-50 rounded-lg border border-gray-200"
               />
             </div>
 
@@ -142,30 +146,18 @@ const EditSessionPage = () => {
                 placeholder="Enter contribution amount"
                 value={contributionAmount}
                 onChange={(e) => setContributionAmount(e.target.value)}
-                className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+                className="w-full p-3 mt-2 bg-gray-50 rounded-lg border border-gray-200"
               />
             </div>
 
             {/* Duration */}
-
-            {/* <div>
-              <label className="text-sm text-gray-600">Duration (Weeks)</label>
-              <input
-                type="number"
-                placeholder="Enter session duration"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
-              />
-            </div> */}
-
             <div>
               <label className="text-sm text-gray-600">Duration</label>
               <div className="relative mt-2">
                 <select
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
-                  className="w-full p-3 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600 appearance-none"
+                  className="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 appearance-none"
                 >
                   <option value="" disabled>
                     Select duration
@@ -201,7 +193,7 @@ const EditSessionPage = () => {
                 placeholder="Enter number of members"
                 value={members}
                 onChange={(e) => setMembers(e.target.value)}
-                className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+                className="w-full p-3 mt-2 bg-gray-50 rounded-lg border border-gray-200"
               />
             </div>
 
@@ -212,7 +204,7 @@ const EditSessionPage = () => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+                className="w-full p-3 mt-2 bg-gray-50 rounded-lg border border-gray-200"
               />
             </div>
 
@@ -223,15 +215,26 @@ const EditSessionPage = () => {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full p-3 mt-2 bg-purple-50 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-600"
+                className="w-full p-3 mt-2 bg-gray-50 rounded-lg border border-gray-200"
               />
+            </div>
+
+            {/* Savings Description */}
+            <div>
+              <label className="text-sm text-gray-600">Savings Description</label>
+              <textarea
+                placeholder="Enter a brief description of the savings session"
+                value={description ?? ""}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full p-3 mt-2 bg-gray-50 rounded-lg border border-gray-200 resize-none min-h-[100px]"
+              ></textarea>
             </div>
 
             {/* Submit Button */}
             <div className="text-center">
               <button
                 type="submit"
-                className="w-full py-3 border border-gray-300 text-black rounded-lg mt-8 bg-purple-600 text-white hover:bg-purple-700 transition duration-300 flex items-center justify-center"
+                className="w-full py-3 border border-gray-300 text-black rounded-lg mt-8 bg-customViolet text-white hover:bg-customLighterViolet transition duration-300 flex items-center justify-center"
                 disabled={editSessionLoading}
               >
                 {editSessionLoading ? (
@@ -264,7 +267,7 @@ const EditSessionPage = () => {
         confirmText="Add Members"
         onCancel={() => {
           setShowSuccessModal(false);
-          navigate(`/sessions/${sessionId}`);
+          navigate(`/collector-sessions/${sessionId}`);
         }}
         cancelText="View"
       />
