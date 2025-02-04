@@ -47,11 +47,12 @@ export const deleteMember = createAsyncThunk(
       }
 
       if (!response.ok) {
-        throw new Error('Failed to delete member');
+        throw new Error(response.statusText);
       }
 
       return memberId; // Return memberId to identify which member was deleted
     } catch (err) {
+      console.error("See console", err);
       return rejectWithValue(err.message);
     }
   }
