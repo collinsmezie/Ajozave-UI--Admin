@@ -30,7 +30,7 @@ const ContributorNav = () => {
           onClick={() => handleNavigation(item.path, item.name)}
         >
           <div
-            className={`flex items-center justify-center p-1 transition-all duration-200 ${
+            className={`flex items-center justify-center p-0.5 transition-all duration-200 ${
               activeNav === item.name ? 'text-[#755FFF]' : 'text-gray-400'
             }`}
           >
