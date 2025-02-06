@@ -455,7 +455,7 @@ const SessionDetailsPage = () => {
 
       {/* Members Section */}
       <div className="bg-white rounded-lg p-4 mb-10">
-        <h1 className="text-lg font-semibold text-gray-700 mb-6 ml-2">Session Members</h1>
+        <h1 className="text-lg font-semibold text-gray-700 mb-6 ml-2">Session Members ({members.length})</h1>
 
         {displayedMembers.length === 0 ? (
           <p className="text-gray-500 text-center">No members added yet.</p>

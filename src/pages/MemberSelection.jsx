@@ -271,7 +271,7 @@ import Modal from '../components/Modal';
 
 const MemberSelectionPage = () => {
   const { sessionId } = useParams();
-  const [members, setMembers] = useState([]);
+  const [interestedMembers, setInterestedMembers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -302,7 +302,7 @@ const MemberSelectionPage = () => {
           confirmText: null,
         });
         const token = localStorage.getItem('jwtToken');
-        const response = await fetch('https://ajozave-api.onrender.com/api/users', {
+        const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}/interestedMembers`, {
           // const response = await fetch('http://localhost:4000/api/users', {
 
           headers: {
@@ -328,7 +328,8 @@ const MemberSelectionPage = () => {
         }
 
         const data = await response.json();
-        setMembers(data);
+        console.log("DATA", data);
+        setInterestedMembers(data.interestedMembers);
         setShowModal(false);
       } catch (err) {
         setModalContent({
@@ -412,26 +413,34 @@ const MemberSelectionPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
+      {/* Header */}
       <header className="p-4 bg-white shadow-sm text-center">
         <h2 className="text-xl font-semibold text-customViolet">Select Members</h2>
         <p className="text-gray-500 mt-1 text-sm">Interested Members for This Session</p>
       </header>
 
+      {/* Loading State */}
       {loading ? (
         <div className="flex items-center justify-center flex-grow">
           <ClipLoader color="#8b5cf6" size={40} />
         </div>
+      ) : interestedMembers.length === 0 ? (
+        /* No Members State */
+        <div className="flex items-center justify-center flex-grow">
+          <p className="text-gray-500 text-lg font-medium">No members joined yet</p>
+        </div>
       ) : (
+        /* Members List */
         <div className="flex flex-col flex-grow p-4">
           <div className="flex-grow overflow-y-auto">
-            {members.map((member) => (
+            {interestedMembers.map((member) => (
               <div
                 key={member._id}
                 onClick={() => handleSelect(member._id)}
-                className={`flex items-center justify-between p-4 mb-3 rounded-lg shadow-sm cursor-pointer bg-white`}
+                className="flex items-center justify-between p-4 mb-3 rounded-lg shadow-sm cursor-pointer bg-white"
               >
+                {/* Member Details */}
                 <div className="flex items-center space-x-1">
-                  {/* Avatar Section */}
                   <div className="w-8 h-8 rounded-full overflow-hidden border border-customViolet mr-4">
                     <img
                       src={`https://api.dicebear.com/5.x/avataaars/svg?seed=${member.username}`}
@@ -439,8 +448,6 @@ const MemberSelectionPage = () => {
                       className="w-full h-full object-cover"
                     />
                   </div>
-
-                  {/* Member Details Section */}
                   <div className="flex-grow">
                     <p className="text-sm font-semibold text-gray-800">{member.username}</p>
                     <div className="flex items-center space-x-1 text-xs text-gray-400">
@@ -460,12 +467,13 @@ const MemberSelectionPage = () => {
             ))}
           </div>
 
+          {/* Confirm Selection Button */}
           <button
             onClick={handleConfirmSelection}
             disabled={submitLoading || selectedMembers.length === 0}
             className={`mt-4 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-customViolet 
-            ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
-            transition duration-200 flex items-center justify-center`}
+        ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
+        transition duration-200 flex items-center justify-center`}
             style={{ minHeight: '48px' }}
           >
             {submitLoading ? (
@@ -482,23 +490,17 @@ const MemberSelectionPage = () => {
         </div>
       )}
 
-      {/* <Modal {...modalData} /> */}
-
+      {/* Modal */}
       {showModal && modalContent && (
-        <>
-          <Modal
-            isOpen={showModal}
-            title={modalContent?.title || ''}
-            message={modalContent?.message || ''}
-            onCancel={() => {
-              setShowModal(false);
-              // handleCancelLongPress();
-            }}
-            onConfirm={modalContent?.onConfirm || null}
-            confirmText={modalContent?.confirmText}
-            disableCancel={modalContent?.disableCancel || false}
-          />
-        </>
+        <Modal
+          isOpen={showModal}
+          title={modalContent?.title || ''}
+          message={modalContent?.message || ''}
+          onCancel={() => setShowModal(false)}
+          onConfirm={modalContent?.onConfirm || null}
+          confirmText={modalContent?.confirmText}
+          disableCancel={modalContent?.disableCancel || false}
+        />
       )}
     </div>
   );
