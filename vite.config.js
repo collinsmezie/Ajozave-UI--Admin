@@ -5,7 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   // add server option to config to use allowedHosts and tunnelling
   server: {
-    allowedHosts: ['53cf-197-210-54-231.ngrok-free.app'],
+    allowedHosts: ['2655-105-113-107-169.ngrok-free.app'],
   },
   plugins: [
     react(),

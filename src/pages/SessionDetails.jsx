@@ -280,6 +280,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchSessionDetails, deleteMember, setModalVisibility } from '../redux/session/sessionSlice';
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import BottomSheetModal from "../components/BottomSheetModal";
 
 
 const SessionDetailsPage = () => {
@@ -295,6 +296,13 @@ const SessionDetailsPage = () => {
   const [deletingMember, setDeletingMember] = useState(null);
   const [showAllMembers, setShowAllMembers] = useState(false);
   const [focusedMember, setFocusedMember] = useState(null); // Tracks the member currently being focused
+
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  const [selectedMembers, setSelectedMembers] = useState([]);
+  // const [loading, setLoading] = useState(false);
+
 
   const calculateRemainingMembers = () => {
     return session && session.numberOfMembers ? session.numberOfMembers - (members?.length || 0) : 0;
@@ -329,6 +337,65 @@ const SessionDetailsPage = () => {
     dispatch(fetchSessionDetails(sessionId));
   }, [dispatch, sessionId]);
 
+  useEffect(() => {
+    const fetchInterestedMembers = async () => {
+      setLoading(true);
+      try {
+        // Show loading spinner in modal
+        setModalContent({
+          title: "Retrying Please Wait...",
+          message: <ClipLoader color="#8b5cf6" size={30} />,
+          onConfirm: null, // Disable action during the loading phase
+          confirmText: null,
+        });
+        const token = localStorage.getItem('jwtToken');
+        const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}/interestedMembers`, {
+          // const response = await fetch('http://localhost:4000/api/users', {
+
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 401) {
+          setModalContent({
+            title: 'Session Expired',
+            message: 'Please log in again to continue.',
+            onConfirm: handleLoginRedirect,
+            confirmText: 'Login',
+            disableCancel: true,
+          });
+          setShowModal(true);
+          return;
+        }
+
+        if (!response.ok) {
+          const errorMessage = await response.json().catch(() => ({}));
+          throw new Error(errorMessage.error || "An unexpected error occurred");
+        }
+
+        const data = await response.json();
+        console.log("DATA", data);
+        setInterestedMembers(data.interestedMembers);
+        setShowModal(false);
+      } catch (err) {
+        setModalContent({
+          title: 'Errorss',
+          message: err.message || "An unexpected error occurred",
+          onConfirm: fetchMembers,
+          confirmText: 'Retry',
+          disableCancel: true,
+        });
+        setShowModal(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInterestedMembers();
+  }, []);
+
+
   const handleDeleteMember = async (memberId) => {
     setDeletingMember(memberId);
     await dispatch(deleteMember({ sessionId, memberId }));
@@ -337,6 +404,70 @@ const SessionDetailsPage = () => {
 
   const toggleShowMembers = () => {
     setShowAllMembers((prev) => !prev);
+  };
+
+  const handleSelect = (memberId) => {
+    setSelectedMembers((prev) =>
+      prev.includes(memberId)
+        ? prev.filter((id) => id !== memberId)
+        : [...prev, memberId]
+    );
+  };
+  
+
+  const handleConfirmSelection = async () => {
+    setSubmitLoading(true);
+    try {
+      const token = localStorage.getItem('jwtToken');
+      const response = await fetch('https://ajozave-api.onrender.com/api/sessions/add-members', {
+        // const response = await fetch('http://localhost:4000/api/sessions/add-members', {
+
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: sessionId,
+          members: selectedMembers,
+        }),
+      });
+
+      const info = await response.json();
+
+      if (response.status === 401) {
+        setModalContent({
+          title: 'Session Expired',
+          message: 'Please log in again to continue.',
+          onConfirm: handleLoginRedirect,
+          confirmText: 'Login',
+          disableCancel: true,
+        });
+        setShowModal(true);
+        return;
+      }
+
+      if (response.status === 400) {
+        setModalContent({
+          title: 'Error',
+          message: info.error,
+          onCancel: () => setModalContent((prev) => ({ ...prev, isOpen: false })),
+        });
+        setShowModal(true);
+        return;
+      }
+
+      // navigate(`/collector-sessions/${sessionId}`);
+    } catch (err) {
+      setModalContent({
+        title: 'Error',
+        message: 'Failed to add members. Please try again later.',
+        onCancel: () => setModalContent((prev) => ({ ...prev, isOpen: false })),
+      });
+      setShowModal(true);
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   if (showModal) {
@@ -556,12 +687,57 @@ const SessionDetailsPage = () => {
         )}
       </div>
 
+      {/* Bottom Sheet Modal */}
+      <BottomSheetModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <h3 className="text-lg font-bold">Invite Members</h3>
+        <p className="text-gray-600">Select members to add to this session.</p>
+
+        {/* Example: List of Users */}
+        <ul className="mt-4 space-y-2">
+          <li className="p-2 bg-gray-100 rounded">User 1</li>
+          <li className="p-2 bg-gray-100 rounded">User 2</li>
+          <li className="p-2 bg-gray-100 rounded">User 3</li>
+          <li className="p-2 bg-gray-100 rounded">User 3</li>
+
+        </ul>
+
+        {/* <button
+          className="w-full bg-green-500 text-white py-2 mt-4 rounded-lg"
+          onClick={() => setModalOpen(false)}
+        >
+          Confirm Selection
+        </button> */}
+
+        {/* Confirm Selection Button */}
+        <button
+          onClick={handleConfirmSelection}
+          disabled={submitLoading || selectedMembers.length === 0}
+          className={`mt-4 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-customViolet 
+        ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
+        transition duration-200 flex items-center justify-center`}
+          style={{ minHeight: '48px' }}
+        >
+          {submitLoading ? (
+            <div className="flex items-center justify-center space-x-2">
+              <ClipLoader color="#fff" size={20} />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center space-x-2">
+              <FiUserPlus size={20} />
+              <span>Confirm Selection</span>
+            </div>
+          )}
+        </button>
+      </BottomSheetModal>
+
+
       {/* Action Button */}
       <div className="text-center">
         <button
           type="submit"
           className="w-full max-w-md mb-6 px-2 py-2 bg-customViolet text-white rounded-lg text-lg font-semibold hover:bg-purple-700 transition duration-200 flex items-center justify-center space-x-2"
-          onClick={handleNavigation}
+          // onClick={handleNavigation}
+          onClick={() => setModalOpen(true)}
         >
           {buttonIcon}
           <span>{buttonText}</span>
