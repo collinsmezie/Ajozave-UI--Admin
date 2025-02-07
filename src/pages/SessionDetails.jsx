@@ -274,7 +274,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiEdit3, FiX, FiUserPlus, FiPlay, FiTrash2, FiPhone, FiChevronDown, FiChevronUp, FiMoreVertical } from 'react-icons/fi';
+import { UserIcon } from "@heroicons/react/24/solid";
+import { FiCheck, FiX, FiUserPlus, FiCircle, FiPlay, FiTrash2, FiPhone, FiChevronDown, FiChevronUp, FiMoreVertical } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSessionDetails, deleteMember, setModalVisibility } from '../redux/session/sessionSlice';
@@ -301,7 +302,15 @@ const SessionDetailsPage = () => {
   const [submitLoading, setSubmitLoading] = useState(false);
 
   const [selectedMembers, setSelectedMembers] = useState([]);
-  // const [loading, setLoading] = useState(false);
+
+  const [modalContent, setModalContent] = useState(null);
+
+  const [alertModal, setAlertShowModal] = useState(false);
+
+
+
+  const [interestedMembers, setInterestedMembers] = useState([]);
+  const [loadingInterestedMembers, setLoadingInterestedMembers] = useState(false);
 
 
   const calculateRemainingMembers = () => {
@@ -339,7 +348,7 @@ const SessionDetailsPage = () => {
 
   useEffect(() => {
     const fetchInterestedMembers = async () => {
-      setLoading(true);
+      setLoadingInterestedMembers(true);
       try {
         // Show loading spinner in modal
         setModalContent({
@@ -365,7 +374,7 @@ const SessionDetailsPage = () => {
             confirmText: 'Login',
             disableCancel: true,
           });
-          setShowModal(true);
+          setAlertShowModal(true);
           return;
         }
 
@@ -377,18 +386,18 @@ const SessionDetailsPage = () => {
         const data = await response.json();
         console.log("DATA", data);
         setInterestedMembers(data.interestedMembers);
-        setShowModal(false);
+        setAlertShowModal(false);
       } catch (err) {
         setModalContent({
           title: 'Errorss',
           message: err.message || "An unexpected error occurred",
-          onConfirm: fetchMembers,
+          onConfirm: fetchInterestedMembers,
           confirmText: 'Retry',
           disableCancel: true,
         });
-        setShowModal(true);
+        setAlertShowModal(true);
       } finally {
-        setLoading(false);
+        setLoadingInterestedMembers(false);
       }
     };
 
@@ -413,7 +422,7 @@ const SessionDetailsPage = () => {
         : [...prev, memberId]
     );
   };
-  
+
 
   const handleConfirmSelection = async () => {
     setSubmitLoading(true);
@@ -443,7 +452,7 @@ const SessionDetailsPage = () => {
           confirmText: 'Login',
           disableCancel: true,
         });
-        setShowModal(true);
+        setAlertShowModal(true);
         return;
       }
 
@@ -453,7 +462,7 @@ const SessionDetailsPage = () => {
           message: info.error,
           onCancel: () => setModalContent((prev) => ({ ...prev, isOpen: false })),
         });
-        setShowModal(true);
+        setAlertShowModal(true);
         return;
       }
 
@@ -464,7 +473,7 @@ const SessionDetailsPage = () => {
         message: 'Failed to add members. Please try again later.',
         onCancel: () => setModalContent((prev) => ({ ...prev, isOpen: false })),
       });
-      setShowModal(true);
+      setAlertShowModal(true);
     } finally {
       setSubmitLoading(false);
     }
@@ -689,17 +698,82 @@ const SessionDetailsPage = () => {
 
       {/* Bottom Sheet Modal */}
       <BottomSheetModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-        <h3 className="text-lg font-bold">Invite Members</h3>
-        <p className="text-gray-600">Select members to add to this session.</p>
+        <h3 className="text-lg font-bold flex items-center gap-2">
+          <UserIcon className="h-5 w-5 text-customViolet" />
+          Add Members
+        </h3>
+        <p className="text-gray-600 mt-2">Select members to add to this session.</p>
 
-        {/* Example: List of Users */}
-        <ul className="mt-4 space-y-2">
-          <li className="p-2 bg-gray-100 rounded">User 1</li>
-          <li className="p-2 bg-gray-100 rounded">User 2</li>
-          <li className="p-2 bg-gray-100 rounded">User 3</li>
-          <li className="p-2 bg-gray-100 rounded">User 3</li>
+        {/* Loading State */}
+        {loadingInterestedMembers ? (
+          <div className="flex items-center justify-center flex-grow">
+            <ClipLoader color="#8b5cf6" size={40} />
+          </div>
+        ) : interestedMembers.length === 0 ? (
+          /* No Members State */
+          <div className="flex items-center justify-center flex-grow">
+            <p className="text-gray-500 text-md font-medium mt-10">No members joined yet</p>
+          </div>
+        ) : (
+          /* Members List */
+          <div className="flex flex-col flex-grow p-4">
+            <div className="flex-grow overflow-y-auto">
+              {interestedMembers.map((member) => (
+                <div
+                  key={member._id}
+                  onClick={() => handleSelect(member._id)}
+                  className="flex items-center justify-between p-4 mb-3 rounded-lg shadow-sm cursor-pointer bg-white"
+                >
+                  {/* Member Details */}
+                  <div className="flex items-center space-x-1">
+                    <div className="w-8 h-8 rounded-full overflow-hidden border border-customViolet mr-4">
+                      <img
+                        src={`https://api.dicebear.com/5.x/avataaars/svg?seed=${member.username}`}
+                        alt={`${member.username}'s avatar`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex-grow">
+                      <p className="text-sm font-semibold text-gray-800">{member.username}</p>
+                      <div className="flex items-center space-x-1 text-xs text-gray-400">
+                        <FiPhone className="text-green-500" />
+                        <span>+234-{generateNumber()}</span>
+                      </div>
+                    </div>
+                  </div>
+                  {selectedMembers.includes(member._id) ? (
+                    <div className="flex items-center justify-center w-5 h-5 rounded-full bg-customViolet">
+                      <FiCheck size={16} className="text-white" />
+                    </div>
+                  ) : (
+                    <FiCircle size={20} className="text-customViolet" />
+                  )}
+                </div>
+              ))}
+            </div>
 
-        </ul>
+            {/* Confirm Selection Button */}
+            {/* <button
+              onClick={handleConfirmSelection}
+              disabled={submitLoading || selectedMembers.length === 0}
+              className={`mt-10 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-customViolet 
+              ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
+              transition duration-200 flex items-center justify-center`}
+              style={{ minHeight: '48px' }}
+            >
+              {submitLoading ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <ClipLoader color="#fff" size={20} />
+                </div>
+              ) : (
+                <div className="flex items-center justify-center space-x-2">
+                  <FiUserPlus size={20} />
+                  <span>Confirm Selection</span>
+                </div>
+              )}
+            </button> */}
+          </div>
+        )}
 
         {/* <button
           className="w-full bg-green-500 text-white py-2 mt-4 rounded-lg"
