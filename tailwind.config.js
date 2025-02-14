@@ -7,9 +7,16 @@ module.exports = {
     extend: {
       colors: {
         customViolet: '#755FFF', // Example custom color
-        customBlue: '#6A4CFF',
-        // customLighterViolet: '#AFA8FF',
-        customLighterViolet: '#9A7EFF',
+        // customPurple: 'rgb(117, 95, 255)', // Equivalent to #755FFF
+        // customPurple1: 'rgba(117, 95, 255, 0.8)', // 80% opacity
+        customPurple: 'rgb(117, 95, 255)',
+        customPurpleDark: 'rgb(90, 70, 230)', // A darker shade for the gradient
+        customPurpleLight: 'rgb(233, 230, 255)', // Soft lavender-like shade
+        customPurpleMid: 'rgb(137, 115, 255)', // A softer but still vibrant shade
+      },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(to right, rgb(117, 95, 255), rgb(90, 70, 230))',
+        // 'custom-gradient': 'linear-gradient(to right, rgba(117, 95, 255, 0.8), rgba(90, 70, 230, 0.8))',
       },
       fontFamily: {
         sans: ['Nunito', 'sans-serif'],

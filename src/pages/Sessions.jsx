@@ -415,6 +415,7 @@ import Modal from '../components/Modal';
 import { fetchSessions, deleteSession } from '../redux/session/sessionsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import SessionsTab from '../components/SessionsTab';
+import { ArrowLeftIcon } from "@heroicons/react/24/outline"; // Import Heroicons
 
 const SessionsPage = () => {
   const [showModal, setShowModal] = useState(false);
@@ -473,7 +474,7 @@ const SessionsPage = () => {
       onConfirm: null, // Disable action during the loading phase
       confirmText: null,
     });
-  
+
     dispatch(deleteSession(sessionId))
       .unwrap()
       .then(() => {
@@ -602,24 +603,37 @@ const SessionsPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 animate-slide-in">
+
       <header className="flex items-center justify-between p-4 bg-white shadow-sm">
-        <h1 className="text-2xl font-semibold text-customViolet">My Sessions</h1>
+        {/* Modern Back Arrow Icon */}
+        <button
+          className="text-customPurple hover:opacity-80 transition-opacity"
+          onClick={() => navigate(-1)}
+        >
+          <ArrowLeftIcon className="h-8 w-8" /> {/* Properly sized for all devices */}
+        </button>
+
+        {/* Centered Title */}
+        <h1 className="text-2xl font-semibold text-customPurpleDark flex-grow text-center">
+          My Sessions
+        </h1>
+
+        {/* Create Session Button */}
         <Link
           to="/collector-create-session"
-          // className="bg-customViolet text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
-          className="bg-customViolet text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
-
+          className="bg-customPurpleDark text-white rounded-full hover:shadow-xl transform transition duration-300 hover:scale-105"
           title="Create a Session"
         >
-          <FiPlusCircle size={33} />
+          <FiPlusCircle size={32} />
         </Link>
       </header>
+
 
       {/* Conditional Guide Text */}
       {sessions.length > 0 && (
         <div className="px-4 mt-2">
           <p className="text-sm text-gray-500 text-center">
-            <span className="font-medium text-customViolet">Tip:</span> Long press (or tap and hold) on a session card to edit or delete it.
+            <span className="font-medium text-customPurple">Tip:</span> Long press (or tap and hold) on a session card to edit or delete it.
           </p>
         </div>
       )}

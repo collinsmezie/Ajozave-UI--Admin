@@ -290,9 +290,9 @@ const SessionDetailsPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const contributionPercentage = 0;
+  const contributionPercentage = 50;
 
-  const { session, members, loading, error, showModal } = useSelector((state) => state.sessionDetails);
+  const { session, sessions, members, loading, error, showModal } = useSelector((state) => state.sessionDetails);
 
   const [deletingMember, setDeletingMember] = useState(null);
   const [showAllMembers, setShowAllMembers] = useState(false);
@@ -306,6 +306,8 @@ const SessionDetailsPage = () => {
   const [modalContent, setModalContent] = useState(null);
 
   const [alertModal, setAlertShowModal] = useState(false);
+
+
 
   const [interestedMembers, setInterestedMembers] = useState([]);
   const [loadingInterestedMembers, setLoadingInterestedMembers] = useState(false);
@@ -370,6 +372,38 @@ const SessionDetailsPage = () => {
 
     fetchData();
   }, [dispatch, sessionId]);
+
+
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // Get session details from Redux store
+  //       const storedSession = await sessions.find((session) => session._id === sessionId);
+  //       console.log("STORED SESSION", storedSession)
+  
+  //       if (!storedSession) {
+  //         // Only fetch data if the session is not already in the store
+  //         const resultAction = await dispatch(fetchSessionDetails(sessionId));
+  
+  //         // Handle errors
+  //         if (fetchSessionDetails.rejected.match(resultAction)) {
+  //           if (resultAction.payload === "Session expired, please log in.") {
+  //             handleLoginRedirect();
+  //             alert("Your session has expired. Please log in again.");
+  //           } else {
+  //             console.error("Failed to fetch session details:", resultAction.payload);
+  //           }
+  //         }
+  //       }
+  //       session = storedSession
+  //     } catch (err) {
+  //       console.error("Unexpected error:", err);
+  //     }
+  //   };
+  
+  //   fetchData();
+  // }, [dispatch, sessionId, sessions]);
 
 
   useEffect(() => {
@@ -594,7 +628,7 @@ const SessionDetailsPage = () => {
 
           <div className="flex flex-col items-start">
             <p className="text-xs uppercase text-gray-500 tracking-wider">Contribution</p>
-            <p className="text-md font-bold text-gray-800">₦{session.contributionAmount.toLocaleString()}</p>
+            <p className="text-md font-bold text-gray-800">₦{session?.contributionAmount.toLocaleString()}</p>
           </div>
 
           <div className="flex flex-col items-start">

@@ -117,7 +117,7 @@
 
 
 import React, { useState } from 'react';
-import { HomeIcon, CreditCardIcon, WalletIcon, UserCircleIcon, EyeIcon, SquaresPlusIcon } from '@heroicons/react/24/outline';
+import { CreditCardIcon, WalletIcon, UserCircleIcon, SquaresPlusIcon, ChartBarIcon, UsersIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
 const CollectorNav = () => {
@@ -130,8 +130,8 @@ const CollectorNav = () => {
   };
 
   const navItems = [
-    { name: 'Home', icon: <HomeIcon className="h-6 w-6" />, path: '/collector-dashboard' },
-    { name: 'Sessions', icon: <SquaresPlusIcon className="h-6 w-6" />, path: '/collector-sessions' },
+    { name: 'Dashboard', icon: <ChartBarIcon className="h-6 w-6" />, path: '/collector-dashboard' },
+    { name: 'Sessions', icon: <UsersIcon className="h-6 w-6" />, path: '/collector-sessions' },
     { name: 'Cards', icon: <CreditCardIcon className="h-6 w-6" />, path: '/collector-coming-soon' },
     { name: 'Wallet', icon: <WalletIcon className="h-6 w-6" />, path: '/collector-coming-soon' },
     { name: 'Menu', icon: <UserCircleIcon className="h-6 w-6" />, path: '/collector-coming-soon' },
@@ -147,7 +147,7 @@ const CollectorNav = () => {
         >
           <div
             className={`flex items-center justify-center p-0.5 transition-all duration-200 ${
-              activeNav === item.name ? 'text-[#755FFF]' : 'text-gray-400'
+              activeNav === item.name ? 'text-customPurple' : 'text-gray-400'
             }`}
           >
             {React.cloneElement(item.icon, {
@@ -156,7 +156,7 @@ const CollectorNav = () => {
           </div>
           <span
             className={`mt-1 text-xs transition-colors ${
-              activeNav === item.name ? 'text-[#755FFF] font-medium' : 'text-gray-500'
+              activeNav === item.name ? 'text-customPurple font-medium' : 'text-gray-500'
             }`}
           >
             {item.name}

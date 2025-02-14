@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import  group icon to represent groups
 
-import { HomeIcon, CreditCardIcon, WalletIcon, UserCircleIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, CreditCardIcon, WalletIcon, UserCircleIcon, UserGroupIcon, FolderMinusIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
 const ContributorNav = () => {
@@ -14,10 +14,10 @@ const ContributorNav = () => {
   };
 
   const navItems = [
-    { name: 'Home', icon: <HomeIcon className="h-6 w-6" />, path: '/contributor-dashboard' },
+    { name: 'Wallet', icon: <WalletIcon className="h-6 w-6" />, path: '/contributor-dashboard' },
     { name: 'Groups', icon: <UserGroupIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },
     { name: 'Cards', icon: <CreditCardIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },
-    { name: 'Wallet', icon: <WalletIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },
+    { name: 'Misc.', icon: <FolderMinusIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },
     { name: 'Menu', icon: <UserCircleIcon className="h-6 w-6" />, path: '/contributor-coming-soon' },
   ];
 
@@ -31,7 +31,7 @@ const ContributorNav = () => {
         >
           <div
             className={`flex items-center justify-center p-0.5 transition-all duration-200 ${
-              activeNav === item.name ? 'text-[#755FFF]' : 'text-gray-400'
+              activeNav === item.name ? 'text-customPurple' : 'text-gray-400'
             }`}
           >
             {React.cloneElement(item.icon, {
@@ -40,7 +40,7 @@ const ContributorNav = () => {
           </div>
           <span
             className={`mt-1 text-xs transition-colors ${
-              activeNav === item.name ? 'text-[#755FFF] font-medium' : 'text-gray-500'
+              activeNav === item.name ? 'text-customPurple font-medium' : 'text-gray-500'
             }`}
           >
             {item.name}
