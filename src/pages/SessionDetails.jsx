@@ -278,7 +278,7 @@ import { UserIcon } from "@heroicons/react/24/solid";
 import { FiCheck, FiX, FiUserPlus, FiCircle, FiPlay, FiTrash2, FiPhone, FiChevronDown, FiChevronUp, FiMoreVertical } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSessionDetails, deleteMember, setModalVisibility } from '../redux/session/sessionSlice';
+import { fetchSessionDetails, deleteMember, addMembers, setModalVisibility } from '../redux/session/sessionDetailsSlice';
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import BottomSheetModal from "../components/BottomSheetModal";
@@ -292,7 +292,7 @@ const SessionDetailsPage = () => {
 
   const contributionPercentage = 0;
 
-  const { session, members, loading, error, showModal } = useSelector((state) => state.session);
+  const { session, members, loading, error, showModal } = useSelector((state) => state.sessionDetails);
 
   const [deletingMember, setDeletingMember] = useState(null);
   const [showAllMembers, setShowAllMembers] = useState(false);
@@ -307,8 +307,6 @@ const SessionDetailsPage = () => {
 
   const [alertModal, setAlertShowModal] = useState(false);
 
-
-
   const [interestedMembers, setInterestedMembers] = useState([]);
   const [loadingInterestedMembers, setLoadingInterestedMembers] = useState(false);
 
@@ -318,6 +316,8 @@ const SessionDetailsPage = () => {
   };
 
   const handleNavigation = () => {
+
+    //This function will later handle the logic for starting the session or opening the modal to add members
     const remainingMembers = calculateRemainingMembers();
     if (remainingMembers === 0) {
       console.log('Session started');
@@ -342,9 +342,35 @@ const SessionDetailsPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
+
   useEffect(() => {
-    dispatch(fetchSessionDetails(sessionId));
+    const fetchData = async () => {
+      try {
+        // check if the session is already in the store
+        if (session && session._id === sessionId) {
+          return;
+        }
+        const resultAction = await dispatch(fetchSessionDetails(sessionId));
+
+        // Check if the action was rejected and handle 401 specifically
+        if (fetchSessionDetails.rejected.match(resultAction)) {
+          if (resultAction.payload === 'Session expired, please log in.') {
+            // Redirect to login page
+            handleLoginRedirect();
+            alert('Your session has expired. Please log in again.'); // Optional: Show a notification
+          } else {
+            // Handle other errors
+            console.error('Failed to fetch session details:', resultAction.payload);
+          }
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    };
+
+    fetchData();
   }, [dispatch, sessionId]);
+
 
   useEffect(() => {
     const fetchInterestedMembers = async () => {
@@ -405,11 +431,29 @@ const SessionDetailsPage = () => {
   }, []);
 
 
+
   const handleDeleteMember = async (memberId) => {
-    setDeletingMember(memberId);
-    await dispatch(deleteMember({ sessionId, memberId }));
-    setDeletingMember(null);
+    try {
+      setDeletingMember(memberId);
+      const resultAction = await dispatch(deleteMember({ sessionId, memberId }));
+
+      if (deleteMember.fulfilled.match(resultAction)) {
+        console.log("Member successfully deleted:", resultAction.payload);
+        // set interested members to the new list of members
+        setInterestedMembers(resultAction.payload.response);
+        setFocusedMember(null);
+      } else {
+        console.error("Delete failed:", resultAction.payload || "Unknown error");
+        alert(resultAction.payload || "Failed to delete member.");
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      alert("Something went wrong.");
+    } finally {
+      setDeletingMember(null);
+    }
   };
+
 
   const toggleShowMembers = () => {
     setShowAllMembers((prev) => !prev);
@@ -427,46 +471,22 @@ const SessionDetailsPage = () => {
   const handleConfirmSelection = async () => {
     setSubmitLoading(true);
     try {
-      const token = localStorage.getItem('jwtToken');
-      const response = await fetch('https://ajozave-api.onrender.com/api/sessions/add-members', {
-        // const response = await fetch('http://localhost:4000/api/sessions/add-members', {
+      const resultAction = await dispatch(addMembers({ sessionId, selectedMembers }));
 
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: sessionId,
-          members: selectedMembers,
-        }),
-      });
+      if (addMembers.fulfilled.match(resultAction)) {
+        console.log("Members successfully added:", resultAction.payload);
+        setInterestedMembers([]);
+        setModalOpen(false);
 
-      const info = await response.json();
-
-      if (response.status === 401) {
-        setModalContent({
-          title: 'Session Expired',
-          message: 'Please log in again to continue.',
-          onConfirm: handleLoginRedirect,
-          confirmText: 'Login',
-          disableCancel: true,
-        });
-        setAlertShowModal(true);
-        return;
-      }
-
-      if (response.status === 400) {
+        navigate(`/collector-sessions/${sessionId}`);
+      } else {
         setModalContent({
           title: 'Error',
-          message: info.error,
+          message: resultAction.payload || 'Failed to add members.',
           onCancel: () => setModalContent((prev) => ({ ...prev, isOpen: false })),
         });
         setAlertShowModal(true);
-        return;
       }
-
-      // navigate(`/collector-sessions/${sessionId}`);
     } catch (err) {
       setModalContent({
         title: 'Error',
@@ -478,6 +498,7 @@ const SessionDetailsPage = () => {
       setSubmitLoading(false);
     }
   };
+
 
   if (showModal) {
     return (
@@ -618,7 +639,6 @@ const SessionDetailsPage = () => {
               <div className="flex-grow">
                 <p className="text-sm font-semibold text-gray-900">{obj.member.username}</p>
                 <div className="flex items-center space-x-1 text-xs text-gray-400">
-                  {/* <FiPhone className="text-green-500" /> */}
                   <span>+234-{generateNumber()}</span>
                 </div>
               </div>
@@ -632,24 +652,14 @@ const SessionDetailsPage = () => {
                   >
                     <FiX size={24} />
                   </button>
-                  {/* <button
-                    className="text-red-500 hover:text-red-700 p-3 rounded-full bg-white shadow-lg mx-2"
-                    onClick={() => handleDeleteMember(obj.member._id)}
-                  >
-                    {deletingMember === obj.member._id ? (
-                      <ClipLoader size={20} color="#8b5cf6" />
-                    ) : (
-                      <FiTrash2 size={24} />
-                    )}
-                  </button> */}
 
                   <button
                     className={`text-red-500 hover:text-red-700 p-3 rounded-full mx-2`}
-                    onClick={() => handleDeleteMember(obj.member._id)}
                   >
                     {deletingMember === obj.member._id ? (
                       <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
                         <ClipLoader size={30} color="#8b5cf6" />
+
                       </div>
                     ) : (
                       <div
@@ -702,7 +712,7 @@ const SessionDetailsPage = () => {
           <UserIcon className="h-5 w-5 text-customViolet" />
           Add Members
         </h3>
-        <p className="text-gray-600 mt-2">Select members to add to this session.</p>
+        <p className="text-gray-600 mt-2">Members interested to join this session</p>
 
         {/* Loading State */}
         {loadingInterestedMembers ? (
@@ -751,57 +761,31 @@ const SessionDetailsPage = () => {
                 </div>
               ))}
             </div>
-
-            {/* Confirm Selection Button */}
-            {/* <button
-              onClick={handleConfirmSelection}
-              disabled={submitLoading || selectedMembers.length === 0}
-              className={`mt-10 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-customViolet 
-              ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
-              transition duration-200 flex items-center justify-center`}
-              style={{ minHeight: '48px' }}
-            >
-              {submitLoading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <ClipLoader color="#fff" size={20} />
-                </div>
-              ) : (
-                <div className="flex items-center justify-center space-x-2">
-                  <FiUserPlus size={20} />
-                  <span>Confirm Selection</span>
-                </div>
-              )}
-            </button> */}
           </div>
         )}
 
-        {/* <button
-          className="w-full bg-green-500 text-white py-2 mt-4 rounded-lg"
-          onClick={() => setModalOpen(false)}
-        >
-          Confirm Selection
-        </button> */}
+        {interestedMembers.length > 0 && (
+          <button
+            onClick={handleConfirmSelection}
+            disabled={submitLoading || selectedMembers.length === 0}
+            className={`mt-4 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-customViolet 
+            ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
+            transition duration-200 flex items-center justify-center`}
+            style={{ minHeight: '48px' }}
+          >
+            {submitLoading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <ClipLoader color="#fff" size={20} />
+              </div>
+            ) : (
+              <div className="flex items-center justify-center space-x-2">
+                <FiUserPlus size={20} />
+                <span>Confirm Selection</span>
+              </div>
+            )}
+          </button>
+        )}
 
-        {/* Confirm Selection Button */}
-        <button
-          onClick={handleConfirmSelection}
-          disabled={submitLoading || selectedMembers.length === 0}
-          className={`mt-4 w-full px-4 py-2 rounded-lg text-lg font-semibold text-white bg-customViolet 
-        ${submitLoading || selectedMembers.length === 0 ? 'opacity-50' : 'hover:bg-purple-700'} 
-        transition duration-200 flex items-center justify-center`}
-          style={{ minHeight: '48px' }}
-        >
-          {submitLoading ? (
-            <div className="flex items-center justify-center space-x-2">
-              <ClipLoader color="#fff" size={20} />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center space-x-2">
-              <FiUserPlus size={20} />
-              <span>Confirm Selection</span>
-            </div>
-          )}
-        </button>
       </BottomSheetModal>
 
 

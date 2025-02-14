@@ -412,41 +412,84 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiPlusCircle, FiTrash2, FiX, FiEdit3 } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Modal from '../components/Modal';
+import { fetchSessions, deleteSession } from '../redux/session/sessionsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import SessionsTab from '../components/SessionsTab';
 
 const SessionsPage = () => {
-  const [sessions, setSessions] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalContent, setModalContent] = useState(null); // Modal content to handle different scenarios
   const [longPressedSessionId, setLongPressedSessionId] = useState(null);
   const [longPressTimer, setLongPressTimer] = useState(null);
 
+  const { sessions, loading, error } = useSelector((state) => state.session);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+
+  const handleLoginRedirect = () => {
+    localStorage.removeItem('jwtToken');
+    navigate('/authentication');
+  };
+
+
   useEffect(() => {
-    const fetchSessions = async () => {
+    const fetchData = async () => {
       try {
-        // Show loading spinner in modal
+        if (sessions.length === 0) {
+          const resultAction = await dispatch(fetchSessions());
+
+          // Check if the action was rejected and handle 401 specifically
+          if (fetchSessions.rejected.match(resultAction)) {
+            if (resultAction.payload === 'Session expired, please log in.') {
+              // Redirect to login page
+              handleLoginRedirect();
+              alert('Your session has expired. Please log in again.');
+            } else {
+              // Handle other errors
+              console.error('Failed to fetch sessions:', resultAction.payload);
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Unexpected error:', err);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, sessions]);
+
+
+  const handleDeleteSession = (sessionId) => {
+    // Show loading state in modal
+    setModalContent({
+      title: "Deleting Session...",
+      message: <ClipLoader color="#8b5cf6" size={30} />,
+      onConfirm: null, // Disable action during the loading phase
+      confirmText: null,
+    });
+  
+    dispatch(deleteSession(sessionId))
+      .unwrap()
+      .then(() => {
+        // Show success message
         setModalContent({
-          title: "Retrying Please Wait...",
-          message: <ClipLoader color="#8b5cf6" size={30} />,
-          onConfirm: null, // Disable action during the loading phase
-          confirmText: null,
+          title: "Session Deleted",
+          message: "The session has been successfully deleted.",
+          onConfirm: () => setShowModal(false),
+          confirmText: "OK",
         });
-        const token = localStorage.getItem('jwtToken');
-        const response = await fetch('https://ajozave-api.onrender.com/api/sessions', {
-          // const response = await fetch('http://localhost:4000/api/sessions', {
+      })
+      .catch((error) => {
+        // Show error message
 
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (response.status === 401) {
+        // if response is 401, redirect to login
+        if (error === 'Session expired, please log in.') {
           setModalContent({
             title: "Session Expired",
             message: "Please log in again to continue.",
@@ -457,95 +500,13 @@ const SessionsPage = () => {
           return;
         }
 
-        if (!response.ok) {
-          const errorMessage = await response.json().catch(() => ({}));
-          throw new Error(errorMessage.error || "An unexpected error occurred");
-        }
-
-        const data = await response.json();
-        setSessions(data.sessions);
-        setShowModal(false)
-      } catch (err) {
-        if (err.message === "No sessions found for this admin") {
-          return
-        }
         setModalContent({
           title: "Error",
-          message: err.message || "An unexpected error occurred",
-          onConfirm: fetchSessions, // Retry fetching sessions
-          confirmText: "Retry",
+          message: error || "An unexpected error occurred",
+          onConfirm: () => setShowModal(false),
+          confirmText: "OK",
         });
-        setShowModal(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSessions();
-  }, []);
-
-  const handleLoginRedirect = () => {
-    localStorage.removeItem('jwtToken');
-    navigate('/authentication');
-  };
-
-  const handleDeleteSession = async (sessionId) => {
-    try {
-      // Show loading spinner in modal
-      setModalContent({
-        title: "Deleting Session...",
-        message: <ClipLoader color="#8b5cf6" size={30} />,
-        onConfirm: null, // Disable action during the loading phase
-        confirmText: null,
       });
-
-      const token = localStorage.getItem('jwtToken');
-      const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}`, {
-        // const response = await fetch('http://localhost:4000/api/sessions/${sessionId}', {
-
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.status === 401) {
-        setModalContent({
-          title: "Session Expired",
-          message: "Please log in again to continue.",
-          onConfirm: handleLoginRedirect,
-          confirmText: "Log In",
-        });
-        setShowModal(true);
-        return;
-      }
-
-      if (!response.ok) {
-        const errorMessage = await response.json().catch(() => ({}));
-        throw new Error(errorMessage.error || "An unexpected error occurred");
-      }
-
-      // Update sessions after successful deletion
-      setSessions(sessions.filter((session) => session._id !== sessionId));
-
-      // Show success message
-      setModalContent({
-        title: "Session Deleted",
-        message: "The session has been successfully deleted.",
-        onConfirm: () => setShowModal(false),
-        confirmText: "OK",
-      });
-    } catch (err) {
-      setModalContent({
-        title: "Error",
-        message: err.message || "An unexpected error occurred",
-        onConfirm: fetchSessions, // Retry fetching sessions
-        confirmText: "Retry",
-      });
-      setShowModal(true);
-    } finally {
-      setLongPressedSessionId(null);
-    }
   };
 
   let startX = 0;
@@ -645,7 +606,9 @@ const SessionsPage = () => {
         <h1 className="text-2xl font-semibold text-customViolet">My Sessions</h1>
         <Link
           to="/collector-create-session"
+          // className="bg-customViolet text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
           className="bg-customViolet text-white rounded-full shadow-lg hover:shadow-xl transform transition duration-300 hover:scale-105"
+
           title="Create a Session"
         >
           <FiPlusCircle size={33} />

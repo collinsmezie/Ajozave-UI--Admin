@@ -73,7 +73,7 @@ const BottomSheetModal = ({ isOpen, onClose, children }) => {
         style={{
           maxHeight: '90vh', // Prevents overflow
           width: '100vw', // Ensures full width on mobile
-          maxWidth: '383px', // Adjusted for better fit on desktop mobile view
+          maxWidth: '384px', // Adjusted for better fit on desktop mobile view
           paddingBottom: '50px', // Prevents overlap with bottom nav
           marginBottom: '54px', // Extra margin to keep it visible
         }}

@@ -333,6 +333,7 @@ const CreateSessionPage = () => {
         setShowExpiredModal(true);
       } else if (response.ok) {
         const sessionData = await response.json();
+        console.log("created-session-data", sessionData)
         setSessionName('');
         setContributionAmount('');
         setDuration('');
