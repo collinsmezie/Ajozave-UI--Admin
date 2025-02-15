@@ -282,6 +282,7 @@ import { fetchSessionDetails, deleteMember, addMembers, setModalVisibility } fro
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import BottomSheetModal from "../components/BottomSheetModal";
+import Modal from "../components/Modal";
 
 
 const SessionDetailsPage = () => {
@@ -303,7 +304,7 @@ const SessionDetailsPage = () => {
 
   const [selectedMembers, setSelectedMembers] = useState([]);
 
-  const [modalContent, setModalContent] = useState(null);
+  const [modalContent, setModalContent] = useState(false);
 
   const [alertModal, setAlertShowModal] = useState(false);
 
@@ -354,6 +355,8 @@ const SessionDetailsPage = () => {
         }
         const resultAction = await dispatch(fetchSessionDetails(sessionId));
 
+        console.log("RESULT ACTION", resultAction)
+
         // Check if the action was rejected and handle 401 specifically
         if (fetchSessionDetails.rejected.match(resultAction)) {
           if (resultAction.payload === 'Session expired, please log in.') {
@@ -381,11 +384,11 @@ const SessionDetailsPage = () => {
   //       // Get session details from Redux store
   //       const storedSession = await sessions.find((session) => session._id === sessionId);
   //       console.log("STORED SESSION", storedSession)
-  
+
   //       if (!storedSession) {
   //         // Only fetch data if the session is not already in the store
   //         const resultAction = await dispatch(fetchSessionDetails(sessionId));
-  
+
   //         // Handle errors
   //         if (fetchSessionDetails.rejected.match(resultAction)) {
   //           if (resultAction.payload === "Session expired, please log in.") {
@@ -401,7 +404,7 @@ const SessionDetailsPage = () => {
   //       console.error("Unexpected error:", err);
   //     }
   //   };
-  
+
   //   fetchData();
   // }, [dispatch, sessionId, sessions]);
 
@@ -411,12 +414,12 @@ const SessionDetailsPage = () => {
       setLoadingInterestedMembers(true);
       try {
         // Show loading spinner in modal
-        setModalContent({
-          title: "Retrying Please Wait...",
-          message: <ClipLoader color="#8b5cf6" size={30} />,
-          onConfirm: null, // Disable action during the loading phase
-          confirmText: null,
-        });
+        // setModalContent({
+        //   title: "Retrying Please Wait...",
+        //   message: <ClipLoader color="#8b5cf6" size={30} />,
+        //   onConfirm: null, // Disable action during the loading phase
+        //   confirmText: null,
+        // });
         const token = localStorage.getItem('jwtToken');
         const response = await fetch(`https://ajozave-api.onrender.com/api/sessions/${sessionId}/interestedMembers`, {
           // const response = await fetch('http://localhost:4000/api/users', {
@@ -458,6 +461,8 @@ const SessionDetailsPage = () => {
         setAlertShowModal(true);
       } finally {
         setLoadingInterestedMembers(false);
+        // setModalContent((prev) => ({ ...prev, isOpen: false }));
+        setModalContent(false);
       }
     };
 
@@ -560,7 +565,15 @@ const SessionDetailsPage = () => {
   }
 
   if (error) {
-    return <div className="flex items-center justify-center min-h-screen text-red-500">{error}</div>;
+    return (
+      <Modal
+        isOpen={true}
+        title="Error"
+        message={error}
+        onConfirm={() => dispatch(fetchSessionDetails(sessionId))}
+        confirmText="Retry"
+      />
+    );
   }
 
   const displayedMembers = showAllMembers ? members : members.slice(0, 3);
@@ -628,7 +641,7 @@ const SessionDetailsPage = () => {
 
           <div className="flex flex-col items-start">
             <p className="text-xs uppercase text-gray-500 tracking-wider">Contribution</p>
-            <p className="text-md font-bold text-gray-800">₦{session?.contributionAmount.toLocaleString()}</p>
+            <p className="text-md font-bold text-gray-800">₦{session.contributionAmount.toLocaleString()}</p>
           </div>
 
           <div className="flex flex-col items-start">
@@ -750,8 +763,8 @@ const SessionDetailsPage = () => {
 
         {/* Loading State */}
         {loadingInterestedMembers ? (
-          <div className="flex items-center justify-center flex-grow">
-            <ClipLoader color="#8b5cf6" size={40} />
+          <div className="flex items-center justify-center flex-grow mt-5">
+            <ClipLoader color="#8b5cf6" size={25} />
           </div>
         ) : interestedMembers.length === 0 ? (
           /* No Members State */
@@ -835,6 +848,43 @@ const SessionDetailsPage = () => {
           <span>{buttonText}</span>
         </button>
       </div>
+
+      {/* Alert Modal */}
+      <Modal
+        isOpen={alertModal}
+        title={alertModal?.title}
+        message={alertModal?.message}
+        onCancel={() => setAlertShowModal(false)}
+        onConfirm={alertModal?.onConfirm}
+        confirmText={alertModal?.confirmText}
+        disableCancel={alertModal?.disableCancel}
+      />
+
+      {/* modal Content */}
+      <Modal
+        isOpen={modalContent}
+        title={modalContent?.title}
+        message={modalContent?.message}
+        onCancel={() => setModalContent(false)}
+        onConfirm={modalContent?.onConfirm}
+        confirmText={modalContent?.confirmText}
+        disableCancel={modalContent?.disableCancel}
+      />
+
+      {/* Success Modal */}
+      {/* <Modal
+        isOpen={showSuccessModal}
+        title="Session Created Successfully!"
+        message="Your new session has been created. You can now add members to the session."
+        onCancel={() => {
+          setShowSuccessModal(false)
+          navigate(`/collector-sessions/${sessionId}`);
+        }}
+        onConfirm={handleAddMembers}
+        confirmText="Add Members"
+        cancelText="View"
+      /> */}
+
     </div>
   );
 };
