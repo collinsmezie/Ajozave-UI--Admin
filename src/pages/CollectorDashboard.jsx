@@ -61,7 +61,7 @@
 //                   // ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-md"
 
 //                    ? "bg-gradient-to-r from-[#755FFF] via-[#755FFF] to-[#6A4CFF] text-white shadow-md"
-                  
+
 //                   : "text-gray-700 hover:text-purple-600"
 //                   }`}
 //                 onClick={() => navigate("/collector-dashboard")}
@@ -179,7 +179,7 @@
 
 
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -206,6 +206,10 @@ const CollectorDashboard = () => {
     totalContributions > 0
       ? ((totalContributions - remainingPayments) / totalContributions) * 100
       : 0;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
@@ -241,7 +245,7 @@ const CollectorDashboard = () => {
               <button
                 className={`px-4 py-1 text-sm rounded-full font-medium transition-all ${activeDashboard === "Collector"
 
-                   ? "bg-gradient-to-r from-[#755FFF] via-[#755FFF] to-[#6A4CFF] text-white shadow-md"
+                  ? "bg-gradient-to-r from-[#755FFF] via-[#755FFF] to-[#6A4CFF] text-white shadow-md"
 
                   // ? "bg-custom-gradient text-white shadow-md"
 

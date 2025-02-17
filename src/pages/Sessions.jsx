@@ -409,7 +409,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiPlusCircle, FiTrash2, FiX, FiEdit3 } from 'react-icons/fi';
+import { FiPlus, FiTrash2, FiX, FiEdit3 } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import Modal from '../components/Modal';
 import { fetchSessions, deleteSession } from '../redux/session/sessionsSlice';
@@ -604,13 +604,13 @@ const SessionsPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 animate-slide-in">
 
-      <header className="flex items-center justify-between p-4 bg-white shadow-sm">
+      <header className="sticky top-0 w-full flex items-center justify-between p-4 bg-white shadow-sm px-4 py-3 z-50">
         {/* Modern Back Arrow Icon */}
         <button
           className="text-customPurple hover:opacity-80 transition-opacity"
           onClick={() => navigate(-1)}
         >
-          <ArrowLeftIcon className="h-8 w-8" /> {/* Properly sized for all devices */}
+          <ArrowLeftIcon className="h-6 w-6" /> {/* Properly sized for all devices */}
         </button>
 
         {/* Centered Title */}
@@ -624,7 +624,8 @@ const SessionsPage = () => {
           className="bg-customPurpleDark text-white rounded-full hover:shadow-xl transform transition duration-300 hover:scale-105"
           title="Create a Session"
         >
-          <FiPlusCircle size={32} />
+          <FiPlus size={25} />
+
         </Link>
       </header>
 

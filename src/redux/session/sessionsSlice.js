@@ -6,7 +6,7 @@ export const fetchSessions = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('jwtToken');
-      const response = await fetch('https://ajozave-api.onrender.com/api/sessions', {
+      const response = await fetch('https://ajozave-api.onrender.com/api/collector-sessions', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -20,7 +20,6 @@ export const fetchSessions = createAsyncThunk(
       }
 
       const data = await response.json();
-      console.log("fetchSessions RESPONSE", data)
       return data.sessions;
     } catch (err) {
       return rejectWithValue(err.message);

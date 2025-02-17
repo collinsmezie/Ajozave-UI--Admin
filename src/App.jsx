@@ -67,7 +67,7 @@ import CollectorNav from './components/CollectorNav';
 import ContributorNav from './components/ContributorNav';
 import ComingSoon from './pages/comingSoon';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
+import ContributorGroupsPage from './pages/ContributorGroupsPage';
 
 function App() {
   const location = useLocation();
@@ -92,6 +92,7 @@ function App() {
           <Route path="/collector-members" element={<MemberSelectionPage />} />
           <Route path="/collector-coming-soon" element={<ComingSoon />} />
           <Route path="/contributor-coming-soon" element={<ComingSoon />} />
+          <Route path="/contributor-groups" element={<ContributorGroupsPage />} />
 
         </Routes>
 

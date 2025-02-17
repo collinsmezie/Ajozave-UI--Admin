@@ -275,7 +275,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserIcon } from "@heroicons/react/24/solid";
-import { FiCheck, FiX, FiUserPlus, FiCircle, FiPlay, FiTrash2, FiPhone, FiChevronDown, FiChevronUp, FiMoreVertical } from 'react-icons/fi';
+import { FiCheck, FiX, FiUserPlus, FiCircle, FiPlay, FiTrash2, FiPhone, FiChevronDown, FiChevronUp, FiMoreVertical, FiCheckCircle, FiUserCheck, FiSliders } from 'react-icons/fi';
 import ClipLoader from 'react-spinners/ClipLoader';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSessionDetails, deleteMember, addMembers, setModalVisibility } from '../redux/session/sessionDetailsSlice';
@@ -283,7 +283,9 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import BottomSheetModal from "../components/BottomSheetModal";
 import Modal from "../components/Modal";
-
+import { BellIcon } from '@heroicons/react/24/outline';
+import { FaHeadset } from 'react-icons/fa';
+import { fetchUserName } from '../utility/helper';
 
 const SessionDetailsPage = () => {
   const { sessionId } = useParams();
@@ -375,38 +377,6 @@ const SessionDetailsPage = () => {
 
     fetchData();
   }, [dispatch, sessionId]);
-
-
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // Get session details from Redux store
-  //       const storedSession = await sessions.find((session) => session._id === sessionId);
-  //       console.log("STORED SESSION", storedSession)
-
-  //       if (!storedSession) {
-  //         // Only fetch data if the session is not already in the store
-  //         const resultAction = await dispatch(fetchSessionDetails(sessionId));
-
-  //         // Handle errors
-  //         if (fetchSessionDetails.rejected.match(resultAction)) {
-  //           if (resultAction.payload === "Session expired, please log in.") {
-  //             handleLoginRedirect();
-  //             alert("Your session has expired. Please log in again.");
-  //           } else {
-  //             console.error("Failed to fetch session details:", resultAction.payload);
-  //           }
-  //         }
-  //       }
-  //       session = storedSession
-  //     } catch (err) {
-  //       console.error("Unexpected error:", err);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [dispatch, sessionId, sessions]);
 
 
   useEffect(() => {
@@ -585,7 +555,36 @@ const SessionDetailsPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 p-4">
       {/* Header */}
-      <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm mb-6">
+
+      <header className="sticky top-0 w-full flex items-center justify-between px-4 py-3 bg-white rounded-2xl z-50 mb-4">
+
+        <div className="flex items-center space-x-3">
+          <img
+            src={`https://api.dicebear.com/5.x/avataaars/svg?seed=Username`}
+            alt="User Avatar"
+            className="w-8 h-8 rounded-full border-2 border-purple-300"
+          />
+          <div>
+            {/* <p className="text-white text-sm font-medium">Hi, Username</p>
+              <p className="text-white text-xs">Welcome back!</p> */}
+            <p className="text-black text-sm font-medium">Hi, {fetchUserName()}</p>
+            <p className="text-gray-600 text-xs">Let's save together!</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-4">
+          {/* <button className="p-2 bg-white transition duration-300">
+
+            <BellIcon className="text-purple-600 w-6 h-6" />
+          </button> */}
+          <button className="p-2 bg-white transition duration-300">
+
+            <FiSliders className="text-purple-500 w-5 h-5" />
+          </button>
+        </div>
+      </header>
+
+
+      <div className="flex justify-between items-center bg-white rounded-2xl p-4 shadow-sm mb-4">
         <div className="flex items-center space-x-2">
           <div className="flex flex-col">
             <p className="text-gray-700 text-sm">Your Total Contribution</p>
@@ -756,7 +755,8 @@ const SessionDetailsPage = () => {
       {/* Bottom Sheet Modal */}
       <BottomSheetModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
         <h3 className="text-lg font-bold flex items-center gap-2">
-          <UserIcon className="h-5 w-5 text-customViolet" />
+          {/* <UserIcon className="h-5 w-5 text-customViolet" /> */}
+          <FiUserPlus className="h-5 w-5 text-customViolet" />
           Add Members
         </h3>
         <p className="text-gray-600 mt-2">Members interested to join this session</p>
@@ -826,7 +826,8 @@ const SessionDetailsPage = () => {
               </div>
             ) : (
               <div className="flex items-center justify-center space-x-2">
-                <FiUserPlus size={20} />
+                {/* <FiCheckCircle size={20} /> */}
+                <FiUserCheck size={20} />
                 <span>Confirm Selection</span>
               </div>
             )}
